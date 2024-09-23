@@ -1,0 +1,7 @@
+Building DAG of jobs...
+MissingInputException in rule runLiftOverSubGenomes in file /data/data2/homes/tmathieu/testingCofSM/1snake.smk, line 295:
+Missing input files for rule runLiftOverSubGenomes:
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/run/lifted.gff3, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/run/unlifted.gff3, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/run/lifted_cleaned.gff, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/run/unmapped.txt
+    wildcards: subgenome=subEugenioides
+    affected files:
+        /data/data2/homes/tmathieu/testingCofSM/subEugenioides/flo_opt.yaml

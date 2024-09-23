@@ -1,0 +1,3 @@
+NameError in file /data/data2/homes/tmathieu/testingCofSM/snake.smk, line 80:
+name 'prevGenomeFile' is not defined
+  File "/data/data2/homes/tmathieu/testingCofSM/snake.smk", line 80, in <module>

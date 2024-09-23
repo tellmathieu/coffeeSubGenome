@@ -1,0 +1,7 @@
+Building DAG of jobs...
+MissingInputException in rule downloadGenomes in file /data/data2/homes/tmathieu/testingCofSM/snake.smk, line 54:
+Missing input files for rule downloadGenomes:
+    output: /data/data2/homes/tmathieu/testingCofSM/genome/GCF_003713225.1_Cara_1.0_genomic.fna.gz, /data/data2/homes/tmathieu/testingCofSM/genome/Cara_r6_tgs15k_ChrNames_racon_w3kb_chrs_NoOrganelles.flip.fix.fa.gz
+    affected files:
+        https://bioinformatics.psb.ugent.be/gdb/coffea_arabica/Cara_r6_tgs15k_ChrNames_racon_w3kb_chrs_NoOrganelles.flip.fix.fa.gz
+        https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/713/225/GCF_003713225.1_Cara_1.0/GCF_003713225.1_Cara_1.0_genomic.fna.gz

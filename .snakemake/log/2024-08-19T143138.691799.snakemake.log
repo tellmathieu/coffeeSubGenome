@@ -1,0 +1,172 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 20
+Rules claiming more threads will be scaled down.
+Job stats:
+job                        count
+-----------------------  -------
+all                            1
+chooseOptionsForFlo            2
+convertSubGenomeCDNAGFF        2
+getSubGenomeHintsGFF           2
+removeGenesFromHintsGFF        2
+sortSubGenomeCDNAGFF           2
+total                         11
+
+Select jobs to execute...
+
+[Mon Aug 19 14:31:39 2024]
+rule sortSubGenomeCDNAGFF:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/processing/cdna_subEugenioides.f.psl
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/processing/cdna_subEugenioides.fs.psl
+    jobid: 20
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/processing/cdna_subEugenioides.fs.psl
+    wildcards: subgenome=subEugenioides
+    resources: tmpdir=/tmp
+
+
+		cat /data/data2/homes/tmathieu/testingCofSM/subEugenioides/processing/cdna_subEugenioides.f.psl 			| sort -n -k 16,16 			| sort -s -k 14,14 			> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/processing/cdna_subEugenioides.fs.psl
+	
+
+[Mon Aug 19 14:31:39 2024]
+rule sortSubGenomeCDNAGFF:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/processing/cdna_subCanephora.f.psl
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/processing/cdna_subCanephora.fs.psl
+    jobid: 27
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subCanephora/processing/cdna_subCanephora.fs.psl
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		cat /data/data2/homes/tmathieu/testingCofSM/subCanephora/processing/cdna_subCanephora.f.psl 			| sort -n -k 16,16 			| sort -s -k 14,14 			> /data/data2/homes/tmathieu/testingCofSM/subCanephora/processing/cdna_subCanephora.fs.psl
+	
+[Mon Aug 19 14:31:48 2024]
+Finished job 20.
+1 of 11 steps (9%) done
+Select jobs to execute...
+
+[Mon Aug 19 14:31:48 2024]
+rule convertSubGenomeCDNAGFF:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/processing/cdna_subEugenioides.fs.psl
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/processing/cdna_subEugenioides.hints
+    jobid: 19
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/processing/cdna_subEugenioides.hints; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/processing/cdna_subEugenioides.fs.psl
+    wildcards: subgenome=subEugenioides
+    resources: tmpdir=/tmp
+
+
+		blat2hints.pl 			--in=/data/data2/homes/tmathieu/testingCofSM/subEugenioides/processing/cdna_subEugenioides.fs.psl 			--out=/data/data2/homes/tmathieu/testingCofSM/subEugenioides/processing/cdna_subEugenioides.hints 			--minintronlen=35 			--trunkSS
+	
+[Mon Aug 19 14:31:48 2024]
+Finished job 27.
+2 of 11 steps (18%) done
+Select jobs to execute...
+
+[Mon Aug 19 14:31:48 2024]
+rule convertSubGenomeCDNAGFF:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/processing/cdna_subCanephora.fs.psl
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/processing/cdna_subCanephora.hints
+    jobid: 26
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subCanephora/processing/cdna_subCanephora.hints; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/processing/cdna_subCanephora.fs.psl
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		blat2hints.pl 			--in=/data/data2/homes/tmathieu/testingCofSM/subCanephora/processing/cdna_subCanephora.fs.psl 			--out=/data/data2/homes/tmathieu/testingCofSM/subCanephora/processing/cdna_subCanephora.hints 			--minintronlen=35 			--trunkSS
+	
+[Mon Aug 19 14:32:05 2024]
+Finished job 19.
+3 of 11 steps (27%) done
+Select jobs to execute...
+
+[Mon Aug 19 14:32:05 2024]
+rule getSubGenomeHintsGFF:
+    input: /home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subEugenioides/prot.hints, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/processing/cdna_subEugenioides.hints, /home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subEugenioides/rnaseq.gff, /home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subEugenioides/introns.f.gff
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_hints.gff
+    jobid: 18
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_hints.gff; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/processing/cdna_subEugenioides.hints
+    wildcards: subgenome=subEugenioides
+    resources: tmpdir=/tmp
+
+
+		cat /home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subEugenioides/prot.hints 		/data/data2/homes/tmathieu/testingCofSM/subEugenioides/processing/cdna_subEugenioides.hints 		/home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subEugenioides/rnaseq.gff 		/home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subEugenioides/introns.f.gff 		> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_hints.gff
+	
+[Mon Aug 19 14:32:06 2024]
+Finished job 26.
+4 of 11 steps (36%) done
+Select jobs to execute...
+
+[Mon Aug 19 14:32:06 2024]
+rule getSubGenomeHintsGFF:
+    input: /home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subCanephora/prot.hints, /data/data2/homes/tmathieu/testingCofSM/subCanephora/processing/cdna_subCanephora.hints, /home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subCanephora/rnaseq.gff, /home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subCanephora/introns.f.gff
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_hints.gff
+    jobid: 25
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_hints.gff; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/processing/cdna_subCanephora.hints
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		cat /home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subCanephora/prot.hints 		/data/data2/homes/tmathieu/testingCofSM/subCanephora/processing/cdna_subCanephora.hints 		/home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subCanephora/rnaseq.gff 		/home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subCanephora/introns.f.gff 		> /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_hints.gff
+	
+[Mon Aug 19 14:32:06 2024]
+Finished job 18.
+5 of 11 steps (45%) done
+Select jobs to execute...
+
+[Mon Aug 19 14:32:06 2024]
+rule removeGenesFromHintsGFF:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_hints.gff
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_nogenes_hints.gff
+    jobid: 17
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_nogenes_hints.gff; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_hints.gff
+    wildcards: subgenome=subEugenioides
+    resources: tmpdir=/tmp
+
+
+		/data/data2/homes/tmathieu/testingCofSM/flo/gff_remove_feats.rb 		gene 		/data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_hints.gff 		> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_nogenes_hints.gff
+	
+[Mon Aug 19 14:32:07 2024]
+Finished job 25.
+6 of 11 steps (55%) done
+Select jobs to execute...
+
+[Mon Aug 19 14:32:07 2024]
+rule removeGenesFromHintsGFF:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_hints.gff
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_nogenes_hints.gff
+    jobid: 24
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_nogenes_hints.gff; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_hints.gff
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		/data/data2/homes/tmathieu/testingCofSM/flo/gff_remove_feats.rb 		gene 		/data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_hints.gff 		> /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_nogenes_hints.gff
+	
+[Mon Aug 19 14:33:14 2024]
+Finished job 24.
+7 of 11 steps (64%) done
+Select jobs to execute...
+
+[Mon Aug 19 14:33:14 2024]
+rule chooseOptionsForFlo:
+    input: /data/data2/homes/tmathieu/testingCofSM/flo/CITATION.cff, /data/data2/homes/tmathieu/testingCofSM/flo/README.md, /data/data2/homes/tmathieu/testingCofSM/flo/Rakefile, /data/data2/homes/tmathieu/testingCofSM/flo/gff_compare.rb, /data/data2/homes/tmathieu/testingCofSM/flo/gff_helpers.rb, /data/data2/homes/tmathieu/testingCofSM/flo/gff_longest_transcripts.rb, /data/data2/homes/tmathieu/testingCofSM/flo/gff_recover.rb, /data/data2/homes/tmathieu/testingCofSM/flo/gff_remove_feats.rb, /data/data2/homes/tmathieu/testingCofSM/flo/opts_example.yaml, /data/data2/homes/tmathieu/testingCofSM/flo/scripts/all_mrna.rb, /data/data2/homes/tmathieu/testingCofSM/flo/scripts/all_mrna_cds.rb, /data/data2/homes/tmathieu/testingCofSM/flo/scripts/clean_NCBI_gff.sh, /data/data2/homes/tmathieu/testingCofSM/flo/scripts/how_many_split_across_scaffolds.rb, /data/data2/homes/tmathieu/testingCofSM/flo/scripts/install.sh, /data/data2/homes/tmathieu/testingCofSM/flo/scripts/longest_mrna.rb, /data/data2/homes/tmathieu/testingCofSM/flo/scripts/longest_mrna_cds.rb, /data/data2/homes/tmathieu/testingCofSM/flo/scripts/qa.rb, /data/data2/homes/tmathieu/testingCofSM/flo/scripts/remove_mitochondrial_annotations.sh, /data/data2/homes/tmathieu/testingCofSM/flo/scripts/trim_NCBI_seqids_to_accession_numbers.sh, /data/data2/homes/tmathieu/testingCofSM/flo/tests/data/augustus_3_3.gff3, /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_Cara_1.0_final.fa, /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_Cara_hifi_final.fa, /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_nogenes_hints.gff
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/flo_opt.yaml
+    jobid: 23
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subCanephora/flo_opt.yaml; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_nogenes_hints.gff
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+RuleException in rule chooseOptionsForFlo in file /data/data2/homes/tmathieu/testingCofSM/1snake.smk, line 268:
+NameError: The name 'subGenomeSource' is unknown in this context. Please make sure that you defined that variable. Also note that braces not used for variable access have to be escaped by repeating them, i.e. {{print $1}}, when formatting the following:
+
+		echo ":add_to_path:"" > {output.optYaml}
+		echo "  - 'ext/kent/bin'" >> {output.optYaml}
+		echo "  - 'ext/parallel-20150722/src'" >> {output.optYaml}
+		echo "  - 'ext/genometools-1.5.6/bin'" >> {output.optYaml}
+		echo ":source_fa: '{subGenomeSource}'" >> {output.optYaml}
+		echo ":target_fa: '{subGenomeTarget}'" >> {output.optYaml}
+		echo ":processes: '20'" >> {output.optYaml}
+		echo ":blat_opts: '-fastMap -tileSize=12 -minIdentity=98'"  >> {output.optYaml}
+		echo ":lift:" >> {output.optYaml}
+		echo "  - '{input.subGenomeNoGenesHints}'" >> {output.optYaml}
+	
