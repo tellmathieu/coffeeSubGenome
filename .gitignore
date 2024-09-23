@@ -1,4 +1,4 @@
-ext/
+\ext/
 flo/
 genome/
 genomeOld/
@@ -9,3 +9,4 @@ tmp_opt_subCanephora/
 tmp_opt_subEugenioides/
 .snakemake/
 flo.tar.gz
+*.txt
