@@ -6,4 +6,5 @@ genomeOld/
 subCanephora/
 subEugenioides/
 tmp_opt_subCanephora/
-tmo_opt_subEugenioides/
+tmp_opt_subEugenioides/
+.snakemake/
