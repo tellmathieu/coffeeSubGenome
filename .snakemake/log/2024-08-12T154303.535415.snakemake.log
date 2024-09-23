@@ -1,0 +1,50 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 20
+Rules claiming more threads will be scaled down.
+Job stats:
+job                count
+---------------  -------
+all                    1
+cleanGenomes           1
+downloadGenomes        1
+total                  3
+
+Select jobs to execute...
+
+[Mon Aug 12 15:43:04 2024]
+rule downloadGenomes:
+    output: /data/data2/homes/tmathieu/testingCofSM/genome/GCF_003713225.1_Cara_1.0_genomic.fna.gz, /data/data2/homes/tmathieu/testingCofSM/genome/Cara_r6_tgs15k_ChrNames_racon_w3kb_chrs_NoOrganelles.flip.fix.fa.gz
+    jobid: 2
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/genome/GCF_003713225.1_Cara_1.0_genomic.fna.gz
+    resources: tmpdir=/tmp
+
+
+		# download genomes used - original (used by Thales) and new (from the nature article)
+		wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/713/225/GCF_003713225.1_Cara_1.0/GCF_003713225.1_Cara_1.0_genomic.fna.gz
+		wget https://bioinformatics.psb.ugent.be/gdb/coffea_arabica/Cara_r6_tgs15k_ChrNames_racon_w3kb_chrs_NoOrganelles.flip.fix.fa.gz
+
+		# make directory and move genomes into it
+		mkdir -p /data/data2/homes/tmathieu/testingCofSM/genome
+		mv GCF_003713225.1_Cara_1.0_genomic.fna.gz /data/data2/homes/tmathieu/testingCofSM/genome/GCF_003713225.1_Cara_1.0_genomic.fna.gz
+		mv Cara_r6_tgs15k_ChrNames_racon_w3kb_chrs_NoOrganelles.flip.fix.fa.gz /data/data2/homes/tmathieu/testingCofSM/genome/Cara_r6_tgs15k_ChrNames_racon_w3kb_chrs_NoOrganelles.flip.fix.fa.gz
+	
+Terminating processes on user request, this might take some time.
+[Mon Aug 12 15:43:24 2024]
+Error in rule downloadGenomes:
+    jobid: 2
+    output: /data/data2/homes/tmathieu/testingCofSM/genome/GCF_003713225.1_Cara_1.0_genomic.fna.gz, /data/data2/homes/tmathieu/testingCofSM/genome/Cara_r6_tgs15k_ChrNames_racon_w3kb_chrs_NoOrganelles.flip.fix.fa.gz
+    shell:
+        
+		# download genomes used - original (used by Thales) and new (from the nature article)
+		wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/713/225/GCF_003713225.1_Cara_1.0/GCF_003713225.1_Cara_1.0_genomic.fna.gz
+		wget https://bioinformatics.psb.ugent.be/gdb/coffea_arabica/Cara_r6_tgs15k_ChrNames_racon_w3kb_chrs_NoOrganelles.flip.fix.fa.gz
+
+		# make directory and move genomes into it
+		mkdir -p /data/data2/homes/tmathieu/testingCofSM/genome
+		mv GCF_003713225.1_Cara_1.0_genomic.fna.gz /data/data2/homes/tmathieu/testingCofSM/genome/GCF_003713225.1_Cara_1.0_genomic.fna.gz
+		mv Cara_r6_tgs15k_ChrNames_racon_w3kb_chrs_NoOrganelles.flip.fix.fa.gz /data/data2/homes/tmathieu/testingCofSM/genome/Cara_r6_tgs15k_ChrNames_racon_w3kb_chrs_NoOrganelles.flip.fix.fa.gz
+	
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Complete log: .snakemake/log/2024-08-12T154303.535415.snakemake.log

@@ -1,0 +1,57 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 20
+Rules claiming more threads will be scaled down.
+Job stats:
+job       count
+------  -------
+all           1
+eTrain        2
+total         3
+
+Select jobs to execute...
+
+[Wed Aug 21 20:18:47 2024]
+rule eTrain:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/test.gb, /data/data2/homes/tmathieu/testingCofSM/subCanephora/train.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/train.out
+    jobid: 41
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subCanephora/train.out
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		etraining 			--species=subCanephora 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/train.gb 			&> /data/data2/homes/tmathieu/testingCofSM/subCanephora/train.out
+	
+
+[Wed Aug 21 20:18:47 2024]
+rule eTrain:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/test.gb, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/train.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/train.out
+    jobid: 1
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/train.out
+    wildcards: subgenome=subEugenioides
+    resources: tmpdir=/tmp
+
+
+		etraining 			--species=subEugenioides 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/train.gb 			&> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/train.out
+	
+[Wed Aug 21 20:18:52 2024]
+Finished job 1.
+1 of 3 steps (33%) done
+[Wed Aug 21 20:18:52 2024]
+Finished job 41.
+2 of 3 steps (67%) done
+Select jobs to execute...
+
+[Wed Aug 21 20:18:52 2024]
+localrule all:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/train.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/train.out
+    jobid: 0
+    reason: Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/train.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/train.out
+    resources: tmpdir=/tmp
+
+[Wed Aug 21 20:18:52 2024]
+Finished job 0.
+3 of 3 steps (100%) done
+Complete log: .snakemake/log/2024-08-21T201846.636510.snakemake.log

@@ -1,0 +1,9 @@
+ext/
+flo/
+genome/
+genomeOld/
+*.out
+subCanephora/
+subEugenioides/
+tmp_opt_subCanephora/
+tmo_opt_subEugenioides/

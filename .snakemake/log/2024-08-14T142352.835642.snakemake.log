@@ -1,0 +1,4 @@
+Building DAG of jobs...
+WildcardError in rule getChromosomeCodes in file /data/data2/homes/tmathieu/testingCofSM/1snake.smk, line 85:
+Wildcards in input files cannot be determined from output files:
+'genome'

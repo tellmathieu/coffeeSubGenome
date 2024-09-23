@@ -1,0 +1,9 @@
+Building DAG of jobs...
+MissingInputException in rule getSubGenomeHintsGFF in file /data/data2/homes/tmathieu/testingCofSM/1snake.smk, line 193:
+Missing input files for rule getSubGenomeHintsGFF:
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_hints.gff
+    wildcards: subgenome=subEugenioides
+    affected files:
+        /home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subEugenioides/prot.hints
+        /home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subEugenioides/introns.f.gff
+        /home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subEugenioides/rnaseq.gff

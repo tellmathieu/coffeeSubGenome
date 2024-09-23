@@ -1,0 +1,114 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 20
+Rules claiming more threads will be scaled down.
+Job stats:
+job                        count
+-----------------------  -------
+all                            1
+chooseOptionsForFlo            2
+convertChrHints                2
+removeGenesFromHintsGFF        2
+runLiftOverSubGenomes          2
+total                          9
+
+Select jobs to execute...
+
+[Mon Aug 19 16:30:51 2024]
+rule convertChrHints:
+    input: /home/tmathieu/testingCofSM/chrConversion.txt, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_hints.gff
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_hints_converted.gff
+    jobid: 19
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_hints_converted.gff
+    wildcards: subgenome=subEugenioides
+    resources: tmpdir=/tmp
+
+
+		lines=$(cat /home/tmathieu/testingCofSM/chrConversion.txt | wc -l)
+		line=1
+		cp /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_hints.gff temp_subEugenioides_chr_hints.gff
+
+		while [ $line -le $lines ]
+			do
+				oldChrName=$(awk '{ print $1 }' /home/tmathieu/testingCofSM/chrConversion.txt | awk -v var1="$line" 'NR==var1')
+				newChrName=$(awk '{ print $2 }' /home/tmathieu/testingCofSM/chrConversion.txt | awk -v var1="$line" 'NR==var1')
+				sed -i -e "s/$oldChrName/$newChrName/g" temp_subEugenioides_chr_hints.fa
+				let line++
+			done
+
+		mv temp_subEugenioides_chr_hints.fa /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_hints_converted.gff
+	
+
+[Mon Aug 19 16:30:51 2024]
+rule convertChrHints:
+    input: /home/tmathieu/testingCofSM/chrConversion.txt, /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_hints.gff
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_hints_converted.gff
+    jobid: 27
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_hints_converted.gff
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		lines=$(cat /home/tmathieu/testingCofSM/chrConversion.txt | wc -l)
+		line=1
+		cp /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_hints.gff temp_subCanephora_chr_hints.gff
+
+		while [ $line -le $lines ]
+			do
+				oldChrName=$(awk '{ print $1 }' /home/tmathieu/testingCofSM/chrConversion.txt | awk -v var1="$line" 'NR==var1')
+				newChrName=$(awk '{ print $2 }' /home/tmathieu/testingCofSM/chrConversion.txt | awk -v var1="$line" 'NR==var1')
+				sed -i -e "s/$oldChrName/$newChrName/g" temp_subCanephora_chr_hints.fa
+				let line++
+			done
+
+		mv temp_subCanephora_chr_hints.fa /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_hints_converted.gff
+	
+[Mon Aug 19 16:30:51 2024]
+Error in rule convertChrHints:
+    jobid: 27
+    input: /home/tmathieu/testingCofSM/chrConversion.txt, /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_hints.gff
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_hints_converted.gff
+    shell:
+        
+		lines=$(cat /home/tmathieu/testingCofSM/chrConversion.txt | wc -l)
+		line=1
+		cp /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_hints.gff temp_subCanephora_chr_hints.gff
+
+		while [ $line -le $lines ]
+			do
+				oldChrName=$(awk '{ print $1 }' /home/tmathieu/testingCofSM/chrConversion.txt | awk -v var1="$line" 'NR==var1')
+				newChrName=$(awk '{ print $2 }' /home/tmathieu/testingCofSM/chrConversion.txt | awk -v var1="$line" 'NR==var1')
+				sed -i -e "s/$oldChrName/$newChrName/g" temp_subCanephora_chr_hints.fa
+				let line++
+			done
+
+		mv temp_subCanephora_chr_hints.fa /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_hints_converted.gff
+	
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Mon Aug 19 16:30:51 2024]
+Error in rule convertChrHints:
+    jobid: 19
+    input: /home/tmathieu/testingCofSM/chrConversion.txt, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_hints.gff
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_hints_converted.gff
+    shell:
+        
+		lines=$(cat /home/tmathieu/testingCofSM/chrConversion.txt | wc -l)
+		line=1
+		cp /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_hints.gff temp_subEugenioides_chr_hints.gff
+
+		while [ $line -le $lines ]
+			do
+				oldChrName=$(awk '{ print $1 }' /home/tmathieu/testingCofSM/chrConversion.txt | awk -v var1="$line" 'NR==var1')
+				newChrName=$(awk '{ print $2 }' /home/tmathieu/testingCofSM/chrConversion.txt | awk -v var1="$line" 'NR==var1')
+				sed -i -e "s/$oldChrName/$newChrName/g" temp_subEugenioides_chr_hints.fa
+				let line++
+			done
+
+		mv temp_subEugenioides_chr_hints.fa /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_hints_converted.gff
+	
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-08-19T163050.422512.snakemake.log
