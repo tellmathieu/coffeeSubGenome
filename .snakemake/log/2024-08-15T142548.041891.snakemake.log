@@ -1,0 +1,77 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 20
+Rules claiming more threads will be scaled down.
+Job stats:
+job                 count
+----------------  -------
+all                     1
+rmUnknownsGenome        2
+total                   3
+
+Select jobs to execute...
+
+[Thu Aug 15 14:25:48 2024]
+rule rmUnknownsGenome:
+    input: /home/tmathieu/testingCofSM/chrConversion.txt, /data/data2/homes/tmathieu/testingCofSM/genome/Cara_hifi_converted.fa
+    output: /data/data2/homes/tmathieu/testingCofSM/genome/Cara_hifi_final.fa
+    jobid: 6
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/genome/Cara_hifi_final.fa; Code has changed since last execution
+    wildcards: genome=Cara_hifi
+    resources: tmpdir=/tmp
+
+
+		lines=$(cat /home/tmathieu/testingCofSM/chrConversion.txt | wc -l)
+		line=1
+
+		while [ $line -le $lines ]
+			do
+				newChrName=$(awk '{ print $2 }' /home/tmathieu/testingCofSM/chrConversion.txt | awk -v var1="$line" 'NR==var1')
+				sed -n "/>$newChrName/{p;n;p}" /data/data2/homes/tmathieu/testingCofSM/genome/Cara_hifi_converted.fa >> temp_Cara_hifi_rep.fa
+				let line++
+			done
+
+		mv temp_Cara_hifi_rep.fa /data/data2/homes/tmathieu/testingCofSM/genome/Cara_hifi_final.fa
+	
+
+[Thu Aug 15 14:25:48 2024]
+rule rmUnknownsGenome:
+    input: /home/tmathieu/testingCofSM/chrConversion.txt, /data/data2/homes/tmathieu/testingCofSM/genome/Cara_1.0_converted.fa
+    output: /data/data2/homes/tmathieu/testingCofSM/genome/Cara_1.0_final.fa
+    jobid: 1
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/genome/Cara_1.0_final.fa; Code has changed since last execution
+    wildcards: genome=Cara_1.0
+    resources: tmpdir=/tmp
+
+
+		lines=$(cat /home/tmathieu/testingCofSM/chrConversion.txt | wc -l)
+		line=1
+
+		while [ $line -le $lines ]
+			do
+				newChrName=$(awk '{ print $2 }' /home/tmathieu/testingCofSM/chrConversion.txt | awk -v var1="$line" 'NR==var1')
+				sed -n "/>$newChrName/{p;n;p}" /data/data2/homes/tmathieu/testingCofSM/genome/Cara_1.0_converted.fa >> temp_Cara_1.0_rep.fa
+				let line++
+			done
+
+		mv temp_Cara_1.0_rep.fa /data/data2/homes/tmathieu/testingCofSM/genome/Cara_1.0_final.fa
+	
+[Thu Aug 15 14:26:20 2024]
+Finished job 1.
+1 of 3 steps (33%) done
+[Thu Aug 15 14:26:23 2024]
+Finished job 6.
+2 of 3 steps (67%) done
+Select jobs to execute...
+
+[Thu Aug 15 14:26:23 2024]
+localrule all:
+    input: /data/data2/homes/tmathieu/testingCofSM/genome/Cara_1.0_final.fa, /data/data2/homes/tmathieu/testingCofSM/genome/Cara_hifi_final.fa, /data/data2/homes/tmathieu/testingCofSM/flo-master/CITATION.cff, /data/data2/homes/tmathieu/testingCofSM/flo-master/README.md, /data/data2/homes/tmathieu/testingCofSM/flo-master/Rakefile, /data/data2/homes/tmathieu/testingCofSM/flo-master/gff_compare.rb, /data/data2/homes/tmathieu/testingCofSM/flo-master/gff_helpers.rb, /data/data2/homes/tmathieu/testingCofSM/flo-master/gff_longest_transcripts.rb, /data/data2/homes/tmathieu/testingCofSM/flo-master/gff_recover.rb, /data/data2/homes/tmathieu/testingCofSM/flo-master/gff_remove_feats.rb, /data/data2/homes/tmathieu/testingCofSM/flo-master/opts_example.yaml, /data/data2/homes/tmathieu/testingCofSM/flo-master/scripts/all_mrna.rb, /data/data2/homes/tmathieu/testingCofSM/flo-master/scripts/all_mrna_cds.rb, /data/data2/homes/tmathieu/testingCofSM/flo-master/scripts/clean_NCBI_gff.sh, /data/data2/homes/tmathieu/testingCofSM/flo-master/scripts/how_many_split_across_scaffolds.rb, /data/data2/homes/tmathieu/testingCofSM/flo-master/scripts/install.sh, /data/data2/homes/tmathieu/testingCofSM/flo-master/scripts/longest_mrna.rb, /data/data2/homes/tmathieu/testingCofSM/flo-master/scripts/longest_mrna_cds.rb, /data/data2/homes/tmathieu/testingCofSM/flo-master/scripts/qa.rb, /data/data2/homes/tmathieu/testingCofSM/flo-master/scripts/remove_mitochondrial_annotations.sh, /data/data2/homes/tmathieu/testingCofSM/flo-master/scripts/trim_NCBI_seqids_to_accession_numbers.sh, /data/data2/homes/tmathieu/testingCofSM/flo-master/tests/data/augustus_3_3.gff3
+    jobid: 0
+    reason: Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/genome/Cara_1.0_final.fa, /data/data2/homes/tmathieu/testingCofSM/genome/Cara_hifi_final.fa
+    resources: tmpdir=/tmp
+
+[Thu Aug 15 14:26:23 2024]
+Finished job 0.
+3 of 3 steps (100%) done
+Complete log: .snakemake/log/2024-08-15T142548.041891.snakemake.log

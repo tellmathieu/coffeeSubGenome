@@ -1,0 +1,474 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 30
+Rules claiming more threads will be scaled down.
+Job stats:
+job                             count
+----------------------------  -------
+all                                 1
+changeConfig                        2
+createTrainingSet                   2
+eTrain                              2
+getErrorsForRefineParameters        2
+initialETraining                    2
+newSpecies                          2
+optimizeFinal                       2
+optimizeUTRs                        2
+runTestAugustus                     2
+testFinal                           2
+testUTR                             2
+testUTRFinal                        2
+trainingTestResults                 2
+total                              27
+
+Select jobs to execute...
+
+[Wed Aug 28 16:57:53 2024]
+rule newSpecies:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_lifted_hints.gff3
+    output: /home/tmathieu/miniforge3/envs/liftnew/config/species/subCanephora/subCanephora_parameters.cfg, /home/tmathieu/miniforge3/envs/liftnew/config/species/subCanephora/subCanephora_weightmatrix.txt, /home/tmathieu/miniforge3/envs/liftnew/config/species/subCanephora/subCanephora_metapars.cfg, /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_New_Species_Setup.txt
+    jobid: 54
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_New_Species_Setup.txt; Code has changed since last execution
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		# Augustus script to set up the software for using an organism that isn't prebuilt
+		new_species.pl --species=subCanephora
+
+		echo "New species setup for subCanephora" > /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_New_Species_Setup.txt
+	
+
+[Wed Aug 28 16:57:53 2024]
+rule newSpecies:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_lifted_hints.gff3
+    output: /home/tmathieu/miniforge3/envs/liftnew/config/species/subEugenioides/subEugenioides_parameters.cfg, /home/tmathieu/miniforge3/envs/liftnew/config/species/subEugenioides/subEugenioides_weightmatrix.txt, /home/tmathieu/miniforge3/envs/liftnew/config/species/subEugenioides/subEugenioides_metapars.cfg, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_New_Species_Setup.txt
+    jobid: 6
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_New_Species_Setup.txt; Code has changed since last execution
+    wildcards: subgenome=subEugenioides
+    resources: tmpdir=/tmp
+
+
+		# Augustus script to set up the software for using an organism that isn't prebuilt
+		new_species.pl --species=subEugenioides
+
+		echo "New species setup for subEugenioides" > /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_New_Species_Setup.txt
+	
+[Wed Aug 28 16:57:53 2024]
+Finished job 54.
+1 of 27 steps (4%) done
+Select jobs to execute...
+
+[Wed Aug 28 16:57:53 2024]
+rule initialETraining:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_New_Species_Setup.txt, /home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subCanephora/bonafide.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_bonafide.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/bonafide.gb
+    jobid: 53
+    reason: Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_New_Species_Setup.txt
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		mkdir -p /data/data2/homes/tmathieu/testingCofSM/subCanephora/training
+		cp /home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subCanephora/bonafide.gb /data/data2/homes/tmathieu/testingCofSM/subCanephora/bonafide.gb
+
+		etraining 			--species=subCanephora 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/bonafide.gb 			&> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_bonafide.out
+	
+[Wed Aug 28 16:57:53 2024]
+Finished job 6.
+2 of 27 steps (7%) done
+Select jobs to execute...
+
+[Wed Aug 28 16:57:53 2024]
+rule initialETraining:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_New_Species_Setup.txt, /home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subEugenioides/bonafide.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_bonafide.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/bonafide.gb
+    jobid: 5
+    reason: Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_New_Species_Setup.txt
+    wildcards: subgenome=subEugenioides
+    resources: tmpdir=/tmp
+
+
+		mkdir -p /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training
+		cp /home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subEugenioides/bonafide.gb /data/data2/homes/tmathieu/testingCofSM/subEugenioides/bonafide.gb
+
+		etraining 			--species=subEugenioides 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/bonafide.gb 			&> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_bonafide.out
+	
+[Wed Aug 28 16:57:59 2024]
+Finished job 53.
+3 of 27 steps (11%) done
+Select jobs to execute...
+
+[Wed Aug 28 16:57:59 2024]
+rule getErrorsForRefineParameters:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_bonafide.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/bonafide.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_error_check.txt, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/bad.lst, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_bonafide.f.gb
+    jobid: 52
+    reason: Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/bonafide.gb, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_bonafide.out
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		# runs through a few refining steps
+		bash /data/data2/homes/tmathieu/testingCofSM/scripts/refineParameters.sh 			subCanephora 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_bonafide.out 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/bonafide.gb 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_error_check.txt 			/home/tmathieu/miniforge3/envs/liftnew/config/species/subCanephora/subCanephora_parameters.cfg 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/bad.lst 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_bonafide.f.gb 	
+[Wed Aug 28 16:57:59 2024]
+Finished job 5.
+4 of 27 steps (15%) done
+Select jobs to execute...
+
+[Wed Aug 28 16:57:59 2024]
+rule getErrorsForRefineParameters:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_bonafide.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/bonafide.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_error_check.txt, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/bad.lst, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_bonafide.f.gb
+    jobid: 4
+    reason: Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_bonafide.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/bonafide.gb
+    wildcards: subgenome=subEugenioides
+    resources: tmpdir=/tmp
+
+
+		# runs through a few refining steps
+		bash /data/data2/homes/tmathieu/testingCofSM/scripts/refineParameters.sh 			subEugenioides 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_bonafide.out 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/bonafide.gb 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_error_check.txt 			/home/tmathieu/miniforge3/envs/liftnew/config/species/subEugenioides/subEugenioides_parameters.cfg 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/bad.lst 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_bonafide.f.gb 	
+[Wed Aug 28 16:58:05 2024]
+Finished job 52.
+5 of 27 steps (19%) done
+Select jobs to execute...
+
+[Wed Aug 28 16:58:05 2024]
+rule createTrainingSet:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_error_check.txt
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.gb
+    jobid: 51
+    reason: Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_error_check.txt
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		randomSplit.pl /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_bonafide.f.gb 3000
+		mv /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_bonafide.f.gb.test /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb
+		mv /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_bonafide.f.gb.train /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.gb
+	
+[Wed Aug 28 16:58:06 2024]
+Finished job 51.
+6 of 27 steps (22%) done
+Select jobs to execute...
+
+[Wed Aug 28 16:58:06 2024]
+rule eTrain:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.out
+    jobid: 57
+    reason: Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.gb
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		etraining 			--species=subCanephora 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.gb 			&> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.out
+	
+[Wed Aug 28 16:58:07 2024]
+Finished job 4.
+7 of 27 steps (26%) done
+Select jobs to execute...
+
+[Wed Aug 28 16:58:07 2024]
+rule createTrainingSet:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_error_check.txt
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.gb, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.gb
+    jobid: 3
+    reason: Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_error_check.txt
+    wildcards: subgenome=subEugenioides
+    resources: tmpdir=/tmp
+
+
+		randomSplit.pl /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_bonafide.f.gb 3000
+		mv /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_bonafide.f.gb.test /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.gb
+		mv /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_bonafide.f.gb.train /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.gb
+	
+[Wed Aug 28 16:58:07 2024]
+Finished job 3.
+8 of 27 steps (30%) done
+Select jobs to execute...
+
+[Wed Aug 28 16:58:07 2024]
+rule eTrain:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.gb, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.out
+    jobid: 43
+    reason: Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.gb, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.gb
+    wildcards: subgenome=subEugenioides
+    resources: tmpdir=/tmp
+
+
+		etraining 			--species=subEugenioides 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.gb 			&> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.out
+	
+[Wed Aug 28 16:58:11 2024]
+Finished job 57.
+9 of 27 steps (33%) done
+Select jobs to execute...
+
+[Wed Aug 28 16:58:11 2024]
+rule changeConfig:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.out
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_paramChange.txt
+    jobid: 56
+    reason: Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.out
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		#changing tag percentage
+		tail -6 /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.out | head -1 | awk '{ print $3 }' | sed "s/(//g" | sed "s/)//g" > /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_paramChange.txt
+		grep /Constant/amberprob /home/tmathieu/miniforge3/envs/liftnew/config/species/subCanephora/subCanephora_parameters.cfg >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_paramChange.txt
+		subCanephoratag=$(awk 'FNR==1 { print $0 }' /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_paramChange.txt)
+		subCanephoraorigCfgTag=$(awk 'FNR==2 { print $0 }' /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_paramChange.txt)
+		echo $subCanephoraorigCfgTag | sed "s/[0-9].[0-9][0-9]/$subCanephoratag/g" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_paramChange.txt
+		subCanephoracfgTag=$(awk 'FNR==3 { print $0 }' /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_paramChange.txt)
+		sed -i "s|$subCanephoraorigCfgTag|$subCanephoracfgTag|g" /home/tmathieu/miniforge3/envs/liftnew/config/species/subCanephora/subCanephora_parameters.cfg
+
+		#changing taa percentage
+		tail -5 /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.out | head -1 | awk '{ print $3 }' | sed "s/(//g" | sed "s/)//g" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_paramChange.txt
+		grep /Constant/ochreprob /home/tmathieu/miniforge3/envs/liftnew/config/species/subCanephora/subCanephora_parameters.cfg >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_paramChange.txt
+		subCanephorataa=$(awk 'FNR==4 { print $0 }' /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_paramChange.txt)
+		subCanephoraorigCfgTaa=$(awk 'FNR==5 { print $0 }' /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_paramChange.txt)
+		echo $subCanephoraorigCfgTaa | sed "s/[0-9].[0-9][0-9]/$subCanephorataa/g" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_paramChange.txt
+		subCanephoracfgTaa=$(awk 'FNR==6 { print $0 }' /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_paramChange.txt)
+		sed -i "s|$subCanephoraorigCfgTaa|$subCanephoracfgTaa|g" /home/tmathieu/miniforge3/envs/liftnew/config/species/subCanephora/subCanephora_parameters.cfg
+
+		#changing tga percentage
+		tail -4 /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.out | head -1 | awk '{ print $3 }' | sed "s/(//g" | sed "s/)//g" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_paramChange.txt
+		grep /Constant/opalprob /home/tmathieu/miniforge3/envs/liftnew/config/species/subCanephora/subCanephora_parameters.cfg >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_paramChange.txt
+		subCanephoratga=$(awk 'FNR==7 { print $0 }' /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_paramChange.txt)
+		subCanephoraorigCfgTga=$(awk 'FNR==8 { print $0 }' /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_paramChange.txt)
+		echo $subCanephoraorigCfgTga | sed "s/[0-9].[0-9][0-9]/$subCanephoratga/g" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_paramChange.txt
+		subCanephoracfgTga=$(awk 'FNR==9 { print $0 }' /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_paramChange.txt)
+		sed -i "s|$subCanephoraorigCfgTga|$subCanephoracfgTga|g" /home/tmathieu/miniforge3/envs/liftnew/config/species/subCanephora/subCanephora_parameters.cfg
+	
+[Wed Aug 28 16:58:11 2024]
+Finished job 56.
+10 of 27 steps (37%) done
+Select jobs to execute...
+
+[Wed Aug 28 16:58:11 2024]
+rule runTestAugustus:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_paramChange.txt
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.out
+    jobid: 50
+    reason: Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_paramChange.txt
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		augustus 			--species=subCanephora 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb 			&> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.out
+	
+[Wed Aug 28 16:58:13 2024]
+Finished job 43.
+11 of 27 steps (41%) done
+Select jobs to execute...
+
+[Wed Aug 28 16:58:13 2024]
+rule changeConfig:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.out
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_paramChange.txt
+    jobid: 42
+    reason: Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.out
+    wildcards: subgenome=subEugenioides
+    resources: tmpdir=/tmp
+
+
+		#changing tag percentage
+		tail -6 /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.out | head -1 | awk '{ print $3 }' | sed "s/(//g" | sed "s/)//g" > /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_paramChange.txt
+		grep /Constant/amberprob /home/tmathieu/miniforge3/envs/liftnew/config/species/subEugenioides/subEugenioides_parameters.cfg >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_paramChange.txt
+		subEugenioidestag=$(awk 'FNR==1 { print $0 }' /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_paramChange.txt)
+		subEugenioidesorigCfgTag=$(awk 'FNR==2 { print $0 }' /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_paramChange.txt)
+		echo $subEugenioidesorigCfgTag | sed "s/[0-9].[0-9][0-9]/$subEugenioidestag/g" >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_paramChange.txt
+		subEugenioidescfgTag=$(awk 'FNR==3 { print $0 }' /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_paramChange.txt)
+		sed -i "s|$subEugenioidesorigCfgTag|$subEugenioidescfgTag|g" /home/tmathieu/miniforge3/envs/liftnew/config/species/subEugenioides/subEugenioides_parameters.cfg
+
+		#changing taa percentage
+		tail -5 /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.out | head -1 | awk '{ print $3 }' | sed "s/(//g" | sed "s/)//g" >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_paramChange.txt
+		grep /Constant/ochreprob /home/tmathieu/miniforge3/envs/liftnew/config/species/subEugenioides/subEugenioides_parameters.cfg >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_paramChange.txt
+		subEugenioidestaa=$(awk 'FNR==4 { print $0 }' /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_paramChange.txt)
+		subEugenioidesorigCfgTaa=$(awk 'FNR==5 { print $0 }' /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_paramChange.txt)
+		echo $subEugenioidesorigCfgTaa | sed "s/[0-9].[0-9][0-9]/$subEugenioidestaa/g" >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_paramChange.txt
+		subEugenioidescfgTaa=$(awk 'FNR==6 { print $0 }' /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_paramChange.txt)
+		sed -i "s|$subEugenioidesorigCfgTaa|$subEugenioidescfgTaa|g" /home/tmathieu/miniforge3/envs/liftnew/config/species/subEugenioides/subEugenioides_parameters.cfg
+
+		#changing tga percentage
+		tail -4 /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.out | head -1 | awk '{ print $3 }' | sed "s/(//g" | sed "s/)//g" >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_paramChange.txt
+		grep /Constant/opalprob /home/tmathieu/miniforge3/envs/liftnew/config/species/subEugenioides/subEugenioides_parameters.cfg >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_paramChange.txt
+		subEugenioidestga=$(awk 'FNR==7 { print $0 }' /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_paramChange.txt)
+		subEugenioidesorigCfgTga=$(awk 'FNR==8 { print $0 }' /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_paramChange.txt)
+		echo $subEugenioidesorigCfgTga | sed "s/[0-9].[0-9][0-9]/$subEugenioidestga/g" >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_paramChange.txt
+		subEugenioidescfgTga=$(awk 'FNR==9 { print $0 }' /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_paramChange.txt)
+		sed -i "s|$subEugenioidesorigCfgTga|$subEugenioidescfgTga|g" /home/tmathieu/miniforge3/envs/liftnew/config/species/subEugenioides/subEugenioides_parameters.cfg
+	
+[Wed Aug 28 16:58:13 2024]
+Finished job 42.
+12 of 27 steps (44%) done
+Select jobs to execute...
+
+[Wed Aug 28 16:58:13 2024]
+rule runTestAugustus:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.gb, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_paramChange.txt
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.out
+    jobid: 2
+    reason: Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides_paramChange.txt, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.gb
+    wildcards: subgenome=subEugenioides
+    resources: tmpdir=/tmp
+
+
+		augustus 			--species=subEugenioides 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.gb 			&> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.out
+	
+[Wed Aug 28 17:01:26 2024]
+Finished job 50.
+13 of 27 steps (48%) done
+Select jobs to execute...
+
+[Wed Aug 28 17:01:26 2024]
+rule optimizeUTRs:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.UTR.out
+    jobid: 59
+    reason: Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.gb
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		optimize_augustus.pl  			--cpus=30 			--species=subCanephora 			--kfold=24 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.gb 			--trainOnlyUtr=1 			--AUGUSTUS_CONFIG_PATH=/home/tmathieu/miniforge3/envs/liftnew/config 			--metapars=/home/tmathieu/miniforge3/envs/liftnew/config/species/subCanephora/subCanephora_metapars.utr.cfg 			| tee /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.UTR.out
+	
+[Wed Aug 28 17:01:58 2024]
+Finished job 2.
+14 of 27 steps (52%) done
+Select jobs to execute...
+
+[Wed Aug 28 17:01:58 2024]
+rule optimizeUTRs:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/optimizeReport.UTR.out
+    jobid: 45
+    reason: Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.gb
+    wildcards: subgenome=subEugenioides
+    resources: tmpdir=/tmp
+
+
+		optimize_augustus.pl  			--cpus=30 			--species=subEugenioides 			--kfold=24 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.gb 			--trainOnlyUtr=1 			--AUGUSTUS_CONFIG_PATH=/home/tmathieu/miniforge3/envs/liftnew/config 			--metapars=/home/tmathieu/miniforge3/envs/liftnew/config/species/subEugenioides/subEugenioides_metapars.utr.cfg 			| tee /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/optimizeReport.UTR.out
+	
+[Wed Aug 28 21:22:58 2024]
+Finished job 59.
+15 of 27 steps (56%) done
+Select jobs to execute...
+
+[Wed Aug 28 21:22:58 2024]
+rule testUTR:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.UTR.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.utr.out
+    jobid: 58
+    reason: Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.UTR.out
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		augustus 			--species=subCanephora 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb 			--UTR=on 			--print_utr=on 			> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.utr.out
+	
+[Wed Aug 28 21:35:12 2024]
+Finished job 58.
+16 of 27 steps (59%) done
+Select jobs to execute...
+
+[Wed Aug 28 21:35:12 2024]
+rule optimizeFinal:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.utr.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.Final.out
+    jobid: 61
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.Final.out; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.utr.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.gb
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		optimize_augustus.pl 			--cpus=24 			--species=subCanephora 			--kfold=24 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.gb 			--trainOnlyUtr=0 			--AUGUSTUS_CONFIG_PATH=/home/tmathieu/miniforge3/envs/liftnew/config 			| tee /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.Final.out
+	
+[Wed Aug 28 21:45:04 2024]
+Finished job 45.
+17 of 27 steps (63%) done
+Select jobs to execute...
+
+[Wed Aug 28 21:45:04 2024]
+rule testUTR:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/optimizeReport.UTR.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.utr.out
+    jobid: 44
+    reason: Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/optimizeReport.UTR.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.gb
+    wildcards: subgenome=subEugenioides
+    resources: tmpdir=/tmp
+
+
+		augustus 			--species=subEugenioides 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.gb 			--UTR=on 			--print_utr=on 			> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.utr.out
+	
+[Wed Aug 28 21:59:03 2024]
+Finished job 44.
+18 of 27 steps (67%) done
+Select jobs to execute...
+
+[Wed Aug 28 21:59:03 2024]
+rule optimizeFinal:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.utr.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/optimizeReport.Final.out
+    jobid: 47
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/optimizeReport.Final.out; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.utr.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.gb
+    wildcards: subgenome=subEugenioides
+    resources: tmpdir=/tmp
+
+
+		optimize_augustus.pl 			--cpus=24 			--species=subEugenioides 			--kfold=24 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.gb 			--trainOnlyUtr=0 			--AUGUSTUS_CONFIG_PATH=/home/tmathieu/miniforge3/envs/liftnew/config 			| tee /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/optimizeReport.Final.out
+	
+[Thu Aug 29 17:03:56 2024]
+Finished job 61.
+19 of 27 steps (70%) done
+Select jobs to execute...
+
+[Thu Aug 29 17:03:56 2024]
+rule testFinal:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.Final.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.noUTR.Final.out
+    jobid: 62
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.noUTR.Final.out; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.Final.out
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		augustus 			--species=subCanephora 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb 			--UTR=off 			> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.noUTR.Final.out
+	
+
+[Thu Aug 29 17:03:56 2024]
+rule testUTRFinal:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.Final.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.UTR.Final.out
+    jobid: 60
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.UTR.Final.out; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.Final.out
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		augustus 			--species=subCanephora 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb 			--UTR=on 			--print_utr=on 			> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.UTR.Final.out
+	
+[Thu Aug 29 17:03:56 2024]
+Error in rule testUTRFinal:
+    jobid: 60
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.Final.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.UTR.Final.out
+    shell:
+        
+		augustus 			--species=subCanephora 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb 			--UTR=on 			--print_utr=on 			> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.UTR.Final.out
+	
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Removing output files of failed job testUTRFinal since they might be corrupted:
+/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.UTR.Final.out
+[Thu Aug 29 17:11:47 2024]
+Finished job 62.
+20 of 27 steps (74%) done
+[Thu Aug 29 19:28:58 2024]
+Finished job 47.
+21 of 27 steps (78%) done
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-08-28T165752.377762.snakemake.log

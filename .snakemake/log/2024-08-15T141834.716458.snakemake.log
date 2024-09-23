@@ -1,0 +1,38 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 20
+Rules claiming more threads will be scaled down.
+Job stats:
+job                 count
+----------------  -------
+all                     1
+rmUnknownsGenome        2
+total                   3
+
+Select jobs to execute...
+
+[Thu Aug 15 14:18:35 2024]
+rule rmUnknownsGenome:
+    input: /home/tmathieu/testingCofSM/chrConversion.txt, /data/data2/homes/tmathieu/testingCofSM/genome/Cara_hifi_converted.fa
+    output: /data/data2/homes/tmathieu/testingCofSM/genome/Cara_hifi_final.fa
+    jobid: 6
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/genome/Cara_hifi_final.fa; Code has changed since last execution
+    wildcards: genome=Cara_hifi
+    resources: tmpdir=/tmp
+
+RuleException in rule rmUnknownsGenome in file /data/data2/homes/tmathieu/testingCofSM/1snake.smk, line 121:
+NameError: The name 'p;n;p' is unknown in this context. Please make sure that you defined that variable. Also note that braces not used for variable access have to be escaped by repeating them, i.e. {{print $1}}, when formatting the following:
+
+		lines=$(cat {input.chrConversion} | wc -l)
+		line=1
+		echo "" > temp_{wildcards.genome}_rep.fa
+
+		while [ $line -le $lines ]
+			do
+				newChrName=$(awk '{{ print $2 }}' {input.chrConversion} | awk -v var1="$line" 'NR==var1')
+				sed -n "/>$newChrName/{p;n;p}" {input.genomeConverted} >> temp_{wildcards.genome}_rep.fa
+				let line++
+			done
+
+		mv temp_{wildcards.genome}_rep.fa {output.genomeFinal}
+	

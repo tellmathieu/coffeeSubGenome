@@ -1,0 +1,13 @@
+Building DAG of jobs...
+AmbiguousRuleException:
+Rules changeConfig and prep are ambiguous for the file /home/tmathieu/miniforge3/envs/liftnew/config/species/subEugenioides/subEugenioides_parameters.cfg.
+Consider starting rule output with a unique prefix, constrain your wildcards, or use the ruleorder directive.
+Wildcards:
+	changeConfig: subgenome=subEugenioides
+	prep: subgenome=subEugenioides
+Expected input files:
+	changeConfig: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/train.out
+	prep: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_lifted_hints.gff3
+Expected output files:
+	changeConfig: /home/tmathieu/miniforge3/envs/liftnew/config/species/subEugenioides/subEugenioides_parameters.cfg /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_paramChange.txt
+	prep: /home/tmathieu/miniforge3/envs/liftnew/config/species/subEugenioides/subEugenioides_parameters.cfg /home/tmathieu/miniforge3/envs/liftnew/config/species/subEugenioides/subEugenioides_weightmatrix.txt /home/tmathieu/miniforge3/envs/liftnew/config/species/subEugenioides/subEugenioides_metapars.cfg

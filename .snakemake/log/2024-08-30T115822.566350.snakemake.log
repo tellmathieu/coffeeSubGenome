@@ -1,0 +1,70 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 30
+Rules claiming more threads will be scaled down.
+Job stats:
+job                        count
+-----------------------  -------
+all                            1
+getAnnoFasta                   2
+runMainAugustusAnalysis        2
+testUTRFinal                   2
+trainingTestResults            2
+total                          9
+
+Select jobs to execute...
+
+[Fri Aug 30 11:58:23 2024]
+rule testUTRFinal:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/optimizeReport.Final.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.UTR.Final.out
+    jobid: 48
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.UTR.Final.out
+    wildcards: subgenome=subEugenioides
+    resources: tmpdir=/tmp
+
+
+		augustus 			--species=subEugenioides 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.gb 			--UTR=on 			--print_utr=on 			> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.UTR.Final.out
+	
+
+[Fri Aug 30 11:58:23 2024]
+rule testUTRFinal:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.Final.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.UTR.Final.out
+    jobid: 64
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.UTR.Final.out
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		augustus 			--species=subCanephora 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb 			--UTR=on 			--print_utr=on 			> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.UTR.Final.out
+	
+[Fri Aug 30 11:58:23 2024]
+Error in rule testUTRFinal:
+    jobid: 64
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.Final.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.UTR.Final.out
+    shell:
+        
+		augustus 			--species=subCanephora 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb 			--UTR=on 			--print_utr=on 			> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.UTR.Final.out
+	
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Removing output files of failed job testUTRFinal since they might be corrupted:
+/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.UTR.Final.out
+[Fri Aug 30 11:58:23 2024]
+Error in rule testUTRFinal:
+    jobid: 48
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/optimizeReport.Final.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.UTR.Final.out
+    shell:
+        
+		augustus 			--species=subEugenioides 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.gb 			--UTR=on 			--print_utr=on 			> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.UTR.Final.out
+	
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Removing output files of failed job testUTRFinal since they might be corrupted:
+/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.UTR.Final.out
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-08-30T115822.566350.snakemake.log

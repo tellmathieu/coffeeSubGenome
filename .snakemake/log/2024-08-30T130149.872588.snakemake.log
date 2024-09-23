@@ -1,0 +1,95 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 20
+Rules claiming more threads will be scaled down.
+Job stats:
+job                        count
+-----------------------  -------
+all                            1
+getAnnoFasta                   2
+runMainAugustusAnalysis        2
+testFinal                      1
+trainingTestResults            2
+total                          8
+
+Select jobs to execute...
+
+[Fri Aug 30 13:01:51 2024]
+rule trainingTestResults:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.utr.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.noUTR.Final.out
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+    jobid: 53
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		echo "******************* subCanephora ************************" > /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		echo "*******************************************************" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		echo "************** Original Training Output ***************" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		echo "*******************************************************" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		grep -A 40 "Evaluation of gene prediction" /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.out >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+
+		echo "*******************************************************" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		echo "********** Optimized UTR Training Output **************" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		echo "*******************************************************" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		grep -A 40 "Evaluation of gene prediction" /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.utr.out >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+
+		echo "*******************************************************" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		echo "************** Final Training Output ******************" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		echo "*******************************************************" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		grep -A 40 "Evaluation of gene prediction" /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.noUTR.Final.out >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+	
+
+[Fri Aug 30 13:01:51 2024]
+rule testFinal:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/optimizeReport.Final.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.gb, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.Final.out
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.noUTR.Final.out
+    jobid: 48
+    reason: Updated input files: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.Final.out
+    wildcards: subgenome=subEugenioides
+    resources: tmpdir=/tmp
+
+
+		augustus 			--species=subEugenioides 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.gb 			--UTR=off 			> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.noUTR.Final.out
+	
+[Fri Aug 30 13:01:51 2024]
+Finished job 53.
+1 of 8 steps (12%) done
+Select jobs to execute...
+
+[Fri Aug 30 13:01:51 2024]
+rule runMainAugustusAnalysis:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt, /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_Cara_hifi_final.fa, /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_lifted_hints.gff3
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora.extrinsic.M.RM.E.W.P.cfg, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/errors_subCanephora.err, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/predicted.C.subCanephora.gff
+    jobid: 52
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/predicted.C.subCanephora.gff; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		cp /home/tmathieu/miniforge3/envs/liftnew/config/extrinsic/extrinsic.M.RM.E.W.P.cfg /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora.extrinsic.M.RM.E.W.P.cfg
+
+		augustus 			--species=subCanephora 			--UTR=on 			--extrinsicCfgFile=/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora.extrinsic.M.RM.E.W.P.cfg 			--allow_hinted_splicesites=atac 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_Cara_hifi_final.fa 			--codingseq=on 			--protein=yes 			--outfile=/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/predicted.C.subCanephora.gff 			--progress=true 			--genemodel=complete 			--hintsfile=/data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_lifted_hints.gff3 			--errfile=/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/errors_subCanephora.err
+	
+[Fri Aug 30 13:02:13 2024]
+Error in rule runMainAugustusAnalysis:
+    jobid: 52
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt, /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_Cara_hifi_final.fa, /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_lifted_hints.gff3
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora.extrinsic.M.RM.E.W.P.cfg, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/errors_subCanephora.err, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/predicted.C.subCanephora.gff
+    shell:
+        
+		cp /home/tmathieu/miniforge3/envs/liftnew/config/extrinsic/extrinsic.M.RM.E.W.P.cfg /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora.extrinsic.M.RM.E.W.P.cfg
+
+		augustus 			--species=subCanephora 			--UTR=on 			--extrinsicCfgFile=/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora.extrinsic.M.RM.E.W.P.cfg 			--allow_hinted_splicesites=atac 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_Cara_hifi_final.fa 			--codingseq=on 			--protein=yes 			--outfile=/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/predicted.C.subCanephora.gff 			--progress=true 			--genemodel=complete 			--hintsfile=/data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_lifted_hints.gff3 			--errfile=/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/errors_subCanephora.err
+	
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Removing output files of failed job runMainAugustusAnalysis since they might be corrupted:
+/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora.extrinsic.M.RM.E.W.P.cfg, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/errors_subCanephora.err, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/predicted.C.subCanephora.gff
+[Fri Aug 30 13:07:55 2024]
+Finished job 48.
+2 of 8 steps (25%) done
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-08-30T130149.872588.snakemake.log

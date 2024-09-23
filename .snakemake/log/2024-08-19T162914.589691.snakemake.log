@@ -1,0 +1,42 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 20
+Rules claiming more threads will be scaled down.
+Job stats:
+job                        count
+-----------------------  -------
+all                            1
+chooseOptionsForFlo            2
+convertChrHints                2
+removeGenesFromHintsGFF        2
+runLiftOverSubGenomes          2
+total                          9
+
+Select jobs to execute...
+
+[Mon Aug 19 16:29:15 2024]
+rule convertChrHints:
+    input: /home/tmathieu/testingCofSM/chrConversion.txt, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_hints.gff
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_hints_converted.gff
+    jobid: 19
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_hints_converted.gff
+    wildcards: subgenome=subEugenioides
+    resources: tmpdir=/tmp
+
+RuleException in rule convertChrHints in file /data/data2/homes/tmathieu/testingCofSM/1snake.smk, line 236:
+AttributeError: 'OutputFiles' object has no attribute 'genomeConverted', when formatting the following:
+
+		lines=$(cat {input.chrConversion} | wc -l)
+		line=1
+		cp {input.subGenomeHints} temp_{wildcards.subgenome}_chr_hints.gff
+
+		while [ $line -le $lines ]
+			do
+				oldChrName=$(awk '{{ print $1 }}' {input.chrConversion} | awk -v var1="$line" 'NR==var1')
+				newChrName=$(awk '{{ print $2 }}' {input.chrConversion} | awk -v var1="$line" 'NR==var1')
+				sed -i -e "s/$oldChrName/$newChrName/g" temp_{wildcards.subgenome}_chr_hints.fa
+				let line++
+			done
+
+		mv temp_{wildcards.subgenome}_chr_hints.fa {output.genomeConverted}
+	

@@ -1,0 +1,8 @@
+Building DAG of jobs...
+MissingInputException in rule all in file /data/data2/homes/tmathieu/testingCofSM/1snake.smk, line 53:
+Missing input files for rule all:
+    affected files:
+        /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_Cara_1.0_final.fa
+        /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_Cara_hifi_final.fa
+        /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_Cara_1.0_final.fa
+        /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_Cara_hifi_final.fa

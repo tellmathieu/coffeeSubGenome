@@ -1,0 +1,78 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 20
+Rules claiming more threads will be scaled down.
+Job stats:
+job                             count
+----------------------------  -------
+all                                 1
+changeConfig                        1
+createTrainingSet                   1
+eTrain                              1
+getAnnoFasta                        2
+getErrorsForRefineParameters        1
+initialETraining                    1
+optimizeFinal                       2
+optimizeUTRs                        1
+runMainAugustusAnalysis             2
+runTestAugustus                     1
+testFinal                           2
+testUTR                             2
+testUTRFinal                        2
+trainAfterOptimization              2
+trainAfterUTROptimization           2
+trainingTestResults                 2
+total                              26
+
+Select jobs to execute...
+
+[Wed Sep  4 22:39:54 2024]
+rule trainAfterUTROptimization:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/optimizeReport.UTR.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.UTR.out
+    jobid: 47
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.UTR.out
+    wildcards: subgenome=subEugenioides
+    resources: tmpdir=/tmp
+
+
+		etraining 			--species=subEugenioides 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.gb 			&> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.UTR.out
+	
+
+[Wed Sep  4 22:39:54 2024]
+rule initialETraining:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_New_Species_Setup.txt, /home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subCanephora/bonafide.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_bonafide.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/bonafide.gb
+    jobid: 59
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_bonafide.out
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		mkdir -p /data/data2/homes/tmathieu/testingCofSM/subCanephora/training
+		cp /home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subCanephora/bonafide.gb /data/data2/homes/tmathieu/testingCofSM/subCanephora/bonafide.gb
+
+		etraining 			--species=subCanephora 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/bonafide.gb 			&> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_bonafide.out
+	
+[Wed Sep  4 22:39:55 2024]
+Error in rule initialETraining:
+    jobid: 59
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_New_Species_Setup.txt, /home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subCanephora/bonafide.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_bonafide.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/bonafide.gb
+    shell:
+        
+		mkdir -p /data/data2/homes/tmathieu/testingCofSM/subCanephora/training
+		cp /home/tmathieu/coffeaArabica/RNAseqBasedPrediction/subCanephora/bonafide.gb /data/data2/homes/tmathieu/testingCofSM/subCanephora/bonafide.gb
+
+		etraining 			--species=subCanephora 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/bonafide.gb 			&> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_bonafide.out
+	
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Removing output files of failed job initialETraining since they might be corrupted:
+/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora_bonafide.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/bonafide.gb
+[Wed Sep  4 22:40:08 2024]
+Finished job 47.
+1 of 26 steps (4%) done
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-09-04T223946.330044.snakemake.log

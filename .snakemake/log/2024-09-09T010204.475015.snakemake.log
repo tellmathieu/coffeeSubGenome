@@ -1,0 +1,424 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 20
+Rules claiming more threads will be scaled down.
+Job stats:
+job                          count
+-------------------------  -------
+all                              1
+getAnnoFasta                     2
+optimize                         2
+optimizeUTRs                     2
+runMainAugustusAnalysis          2
+runUTRTestAugustus               2
+testFinal                        2
+testUTR                          2
+trainAfterOptimization           2
+trainAfterUTROptimization        2
+trainingTestResults              2
+total                           21
+
+Select jobs to execute...
+
+[Mon Sep  9 01:02:05 2024]
+rule runUTRTestAugustus:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.gb, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.out
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.utr.out
+    jobid: 46
+    reason: Set of input files has changed since last execution; Code has changed since last execution
+    wildcards: subgenome=subEugenioides
+    threads: 20
+    resources: tmpdir=/tmp
+
+
+		augustus 			--species=subEugenioides 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.gb 			--UTR=on 			--print_utr=on 			&> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.utr.out
+	
+[Mon Sep  9 01:12:48 2024]
+Finished job 46.
+1 of 21 steps (5%) done
+Select jobs to execute...
+
+[Mon Sep  9 01:12:48 2024]
+rule optimize:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/optimizeReport.out
+    jobid: 52
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/optimizeReport.out
+    wildcards: subgenome=subEugenioides
+    threads: 20
+    resources: tmpdir=/tmp
+
+
+		optimize_augustus.pl 			--cpus=24 			--species=subEugenioides 			--kfold=24 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.gb 			--trainOnlyUtr=0 			--AUGUSTUS_CONFIG_PATH=/home/tmathieu/miniforge3/envs/liftnew/config 			| tee /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/optimizeReport.out
+	
+[Mon Sep  9 16:05:53 2024]
+Finished job 52.
+2 of 21 steps (10%) done
+Select jobs to execute...
+
+[Mon Sep  9 16:05:53 2024]
+rule trainAfterOptimization:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/optimizeReport.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.afterOpt.out
+    jobid: 51
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.afterOpt.out; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/optimizeReport.out
+    wildcards: subgenome=subEugenioides
+    threads: 20
+    resources: tmpdir=/tmp
+
+
+		etraining 			--species=subEugenioides 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.gb 			&> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.afterOpt.out
+	
+[Mon Sep  9 16:06:07 2024]
+Finished job 51.
+3 of 21 steps (14%) done
+Select jobs to execute...
+
+[Mon Sep  9 16:06:07 2024]
+rule runUTRTestAugustus:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.out
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.utr.out
+    jobid: 64
+    reason: Set of input files has changed since last execution; Code has changed since last execution
+    wildcards: subgenome=subCanephora
+    threads: 20
+    resources: tmpdir=/tmp
+
+
+		augustus 			--species=subCanephora 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb 			--UTR=on 			--print_utr=on 			&> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.utr.out
+	
+[Mon Sep  9 16:16:31 2024]
+Finished job 64.
+4 of 21 steps (19%) done
+Select jobs to execute...
+
+[Mon Sep  9 16:16:31 2024]
+rule optimize:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.out
+    jobid: 70
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.out
+    wildcards: subgenome=subCanephora
+    threads: 20
+    resources: tmpdir=/tmp
+
+
+		optimize_augustus.pl 			--cpus=24 			--species=subCanephora 			--kfold=24 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.gb 			--trainOnlyUtr=0 			--AUGUSTUS_CONFIG_PATH=/home/tmathieu/miniforge3/envs/liftnew/config 			| tee /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.out
+	
+[Mon Sep  9 18:53:11 2024]
+Finished job 70.
+5 of 21 steps (24%) done
+Select jobs to execute...
+
+[Mon Sep  9 18:53:11 2024]
+rule trainAfterOptimization:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.afterOpt.out
+    jobid: 69
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.afterOpt.out; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.out
+    wildcards: subgenome=subCanephora
+    threads: 20
+    resources: tmpdir=/tmp
+
+
+		etraining 			--species=subCanephora 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.gb 			&> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.afterOpt.out
+	
+[Mon Sep  9 18:53:23 2024]
+Finished job 69.
+6 of 21 steps (29%) done
+Select jobs to execute...
+
+[Mon Sep  9 18:53:23 2024]
+rule optimizeUTRs:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.afterOpt.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.UTR.out
+    jobid: 68
+    reason: Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.afterOpt.out; Set of input files has changed since last execution
+    wildcards: subgenome=subCanephora
+    threads: 20
+    resources: tmpdir=/tmp
+
+
+		optimize_augustus.pl  			--cpus=24 			--species=subCanephora 			--kfold=24 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.gb 			--trainOnlyUtr=1 			--AUGUSTUS_CONFIG_PATH=/home/tmathieu/miniforge3/envs/liftnew/config 			--metapars=/home/tmathieu/miniforge3/envs/liftnew/config/species/subCanephora/subCanephora_metapars.utr.cfg 			| tee /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.UTR.out
+	
+[Mon Sep  9 21:43:12 2024]
+Finished job 68.
+7 of 21 steps (33%) done
+Select jobs to execute...
+
+[Mon Sep  9 21:43:12 2024]
+rule trainAfterUTROptimization:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.UTR.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.UTR.out
+    jobid: 67
+    reason: Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/optimizeReport.UTR.out
+    wildcards: subgenome=subCanephora
+    threads: 20
+    resources: tmpdir=/tmp
+
+
+		etraining 			--species=subCanephora 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.gb 			&> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.UTR.out
+	
+[Mon Sep  9 21:43:24 2024]
+Finished job 67.
+8 of 21 steps (38%) done
+Select jobs to execute...
+
+[Mon Sep  9 21:43:24 2024]
+rule optimizeUTRs:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.afterOpt.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/optimizeReport.UTR.out
+    jobid: 50
+    reason: Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.afterOpt.out; Set of input files has changed since last execution
+    wildcards: subgenome=subEugenioides
+    threads: 20
+    resources: tmpdir=/tmp
+
+
+		optimize_augustus.pl  			--cpus=24 			--species=subEugenioides 			--kfold=24 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.gb 			--trainOnlyUtr=1 			--AUGUSTUS_CONFIG_PATH=/home/tmathieu/miniforge3/envs/liftnew/config 			--metapars=/home/tmathieu/miniforge3/envs/liftnew/config/species/subEugenioides/subEugenioides_metapars.utr.cfg 			| tee /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/optimizeReport.UTR.out
+	
+[Tue Sep 10 00:53:36 2024]
+Finished job 50.
+9 of 21 steps (43%) done
+Select jobs to execute...
+
+[Tue Sep 10 00:53:36 2024]
+rule trainAfterUTROptimization:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/optimizeReport.UTR.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.gb
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.UTR.out
+    jobid: 49
+    reason: Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/optimizeReport.UTR.out
+    wildcards: subgenome=subEugenioides
+    threads: 20
+    resources: tmpdir=/tmp
+
+
+		etraining 			--species=subEugenioides 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.gb 			&> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.UTR.out
+	
+[Tue Sep 10 00:53:50 2024]
+Finished job 49.
+10 of 21 steps (48%) done
+Select jobs to execute...
+
+[Tue Sep 10 00:53:50 2024]
+rule testUTR:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.gb, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.UTR.out
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.UTR.Final.out
+    jobid: 48
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.UTR.Final.out; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/train.UTR.out
+    wildcards: subgenome=subEugenioides
+    threads: 20
+    resources: tmpdir=/tmp
+
+
+		augustus 			--species=subEugenioides 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.gb 			--UTR=on 			--print_utr=on 			> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.UTR.Final.out
+	
+[Tue Sep 10 01:05:02 2024]
+Finished job 48.
+11 of 21 steps (52%) done
+Select jobs to execute...
+
+[Tue Sep 10 01:05:02 2024]
+rule testFinal:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.gb, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.UTR.Final.out
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.noUTR.Final.out
+    jobid: 47
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.noUTR.Final.out; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.UTR.Final.out
+    wildcards: subgenome=subEugenioides
+    threads: 20
+    resources: tmpdir=/tmp
+
+
+		augustus 			--species=subEugenioides 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.gb 			--UTR=off 			> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.noUTR.Final.out
+	
+[Tue Sep 10 01:09:06 2024]
+Finished job 47.
+12 of 21 steps (57%) done
+Select jobs to execute...
+
+[Tue Sep 10 01:09:06 2024]
+rule trainingTestResults:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.utr.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.noUTR.Final.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.UTR.Final.out
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/trainingSummaryReport.txt
+    jobid: 13
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/trainingSummaryReport.txt; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.UTR.Final.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.noUTR.Final.out, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.utr.out
+    wildcards: subgenome=subEugenioides
+    threads: 20
+    resources: tmpdir=/tmp
+
+
+		echo "******************* subEugenioides ************************" > /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/trainingSummaryReport.txt
+		echo "*******************************************************" >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/trainingSummaryReport.txt
+		echo "************** Original Training Output ***************" >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/trainingSummaryReport.txt
+		echo "*******************************************************" >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/trainingSummaryReport.txt
+		grep -A 40 "Evaluation of gene prediction" /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.out >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/trainingSummaryReport.txt
+
+		echo "*******************************************************" >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/trainingSummaryReport.txt
+		echo "************** Final Training Output ******************" >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/trainingSummaryReport.txt
+		echo "*******************************************************" >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/trainingSummaryReport.txt
+		grep -A 40 "Evaluation of gene prediction" /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.noUTR.Final.out >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/trainingSummaryReport.txt
+
+		echo "*******************************************************" >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/trainingSummaryReport.txt
+		echo "********** Optimized UTR Training Output **************" >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/trainingSummaryReport.txt
+		echo "*******************************************************" >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/trainingSummaryReport.txt
+		grep -A 40 "Evaluation of gene prediction" /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.utr.out >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/trainingSummaryReport.txt
+
+		echo "*******************************************************" >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/trainingSummaryReport.txt
+		echo "************ Final UTR Training Output ****************" >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/trainingSummaryReport.txt
+		echo "*******************************************************" >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/trainingSummaryReport.txt
+		grep -A 40 "Evaluation of gene prediction" /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.UTR.Final.out >> /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/trainingSummaryReport.txt
+	
+[Tue Sep 10 01:09:06 2024]
+Finished job 13.
+13 of 21 steps (62%) done
+Select jobs to execute...
+
+[Tue Sep 10 01:09:06 2024]
+rule runMainAugustusAnalysis:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/trainingSummaryReport.txt, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_Cara_hifi_final.fa, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_lifted_hints.gff3
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides.extrinsic.M.RM.E.W.P.cfg, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/errors_subEugenioides.err, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/predicted.C.subEugenioides.gff
+    jobid: 12
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/predicted.C.subEugenioides.gff; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/trainingSummaryReport.txt
+    wildcards: subgenome=subEugenioides
+    threads: 20
+    resources: tmpdir=/tmp
+
+
+		cp /home/tmathieu/miniforge3/envs/liftnew/config/extrinsic/extrinsic.M.RM.E.W.P.cfg /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides.extrinsic.M.RM.E.W.P.cfg
+
+		augustus 			--species=subEugenioides 			--UTR=on 			--extrinsicCfgFile=/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides.extrinsic.M.RM.E.W.P.cfg 			--allow_hinted_splicesites=atac 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_Cara_hifi_final.fa 			--codingseq=on 			--protein=on 			--outfile=/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/predicted.C.subEugenioides.gff 			--progress=true 			--genemodel=complete 			--hintsfile=/data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_lifted_hints.gff3 			--errfile=/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/errors_subEugenioides.err
+	
+[Wed Sep 11 07:37:13 2024]
+Finished job 12.
+14 of 21 steps (67%) done
+Select jobs to execute...
+
+[Wed Sep 11 07:37:13 2024]
+rule testUTR:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.UTR.out
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.UTR.Final.out
+    jobid: 66
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.UTR.Final.out; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/train.UTR.out
+    wildcards: subgenome=subCanephora
+    threads: 20
+    resources: tmpdir=/tmp
+
+
+		augustus 			--species=subCanephora 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb 			--UTR=on 			--print_utr=on 			> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.UTR.Final.out
+	
+[Wed Sep 11 07:47:35 2024]
+Finished job 66.
+15 of 21 steps (71%) done
+Select jobs to execute...
+
+[Wed Sep 11 07:47:35 2024]
+rule testFinal:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.UTR.Final.out
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.noUTR.Final.out
+    jobid: 65
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.noUTR.Final.out; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.UTR.Final.out
+    wildcards: subgenome=subCanephora
+    threads: 20
+    resources: tmpdir=/tmp
+
+
+		augustus 			--species=subCanephora 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.gb 			--UTR=off 			> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.noUTR.Final.out
+	
+[Wed Sep 11 07:51:21 2024]
+Finished job 65.
+16 of 21 steps (76%) done
+Select jobs to execute...
+
+[Wed Sep 11 07:51:21 2024]
+rule trainingTestResults:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.utr.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.noUTR.Final.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.UTR.Final.out
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+    jobid: 55
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.noUTR.Final.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.UTR.Final.out, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.utr.out
+    wildcards: subgenome=subCanephora
+    threads: 20
+    resources: tmpdir=/tmp
+
+
+		echo "******************* subCanephora ************************" > /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		echo "*******************************************************" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		echo "************** Original Training Output ***************" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		echo "*******************************************************" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		grep -A 40 "Evaluation of gene prediction" /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.out >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+
+		echo "*******************************************************" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		echo "************** Final Training Output ******************" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		echo "*******************************************************" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		grep -A 40 "Evaluation of gene prediction" /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.noUTR.Final.out >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+
+		echo "*******************************************************" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		echo "********** Optimized UTR Training Output **************" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		echo "*******************************************************" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		grep -A 40 "Evaluation of gene prediction" /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.utr.out >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+
+		echo "*******************************************************" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		echo "************ Final UTR Training Output ****************" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		echo "*******************************************************" >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+		grep -A 40 "Evaluation of gene prediction" /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/test.UTR.Final.out >> /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+	
+[Wed Sep 11 07:51:21 2024]
+Finished job 55.
+17 of 21 steps (81%) done
+Select jobs to execute...
+
+[Wed Sep 11 07:51:21 2024]
+rule runMainAugustusAnalysis:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt, /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_Cara_hifi_final.fa, /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_lifted_hints.gff3
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora.extrinsic.M.RM.E.W.P.cfg, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/errors_subCanephora.err, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/predicted.C.subCanephora.gff
+    jobid: 54
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/predicted.C.subCanephora.gff; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/trainingSummaryReport.txt
+    wildcards: subgenome=subCanephora
+    threads: 20
+    resources: tmpdir=/tmp
+
+
+		cp /home/tmathieu/miniforge3/envs/liftnew/config/extrinsic/extrinsic.M.RM.E.W.P.cfg /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora.extrinsic.M.RM.E.W.P.cfg
+
+		augustus 			--species=subCanephora 			--UTR=on 			--extrinsicCfgFile=/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/subCanephora.extrinsic.M.RM.E.W.P.cfg 			--allow_hinted_splicesites=atac 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_Cara_hifi_final.fa 			--codingseq=on 			--protein=on 			--outfile=/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/predicted.C.subCanephora.gff 			--progress=true 			--genemodel=complete 			--hintsfile=/data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_lifted_hints.gff3 			--errfile=/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/errors_subCanephora.err
+	
+[Thu Sep 12 12:02:00 2024]
+Finished job 54.
+18 of 21 steps (86%) done
+Select jobs to execute...
+
+[Thu Sep 12 12:02:01 2024]
+rule getAnnoFasta:
+    input: /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_Cara_hifi_final.fa, /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/predicted.C.subCanephora.gff
+    output: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/predicted.C.subCanephora.aa
+    jobid: 53
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/predicted.C.subCanephora.aa; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subCanephora/training/predicted.C.subCanephora.gff
+    wildcards: subgenome=subCanephora
+    resources: tmpdir=/tmp
+
+
+		getAnnoFasta.pl 			--seqfile /data/data2/homes/tmathieu/testingCofSM/subCanephora/subCanephora_Cara_hifi_final.fa 			/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/predicted.C.subCanephora.gff
+	
+
+[Thu Sep 12 12:02:01 2024]
+rule getAnnoFasta:
+    input: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_Cara_hifi_final.fa, /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/predicted.C.subEugenioides.gff
+    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/predicted.C.subEugenioides.aa
+    jobid: 1
+    reason: Missing output files: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/predicted.C.subEugenioides.aa; Input files updated by another job: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/predicted.C.subEugenioides.gff
+    wildcards: subgenome=subEugenioides
+    resources: tmpdir=/tmp
+
+
+		getAnnoFasta.pl 			--seqfile /data/data2/homes/tmathieu/testingCofSM/subEugenioides/subEugenioides_Cara_hifi_final.fa 			/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/predicted.C.subEugenioides.gff
+	
+Waiting at most 5 seconds for missing files.
+MissingOutputException in rule getAnnoFasta in file /data/data2/homes/tmathieu/testingCofSM/1snake.smk, line 700:
+Job 1  completed successfully, but some output files are missing. Missing files after 5 seconds. This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait:
+/data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/predicted.C.subEugenioides.aa
+Waiting at most 5 seconds for missing files.
+MissingOutputException in rule getAnnoFasta in file /data/data2/homes/tmathieu/testingCofSM/1snake.smk, line 700:
+Job 53  completed successfully, but some output files are missing. Missing files after 5 seconds. This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait:
+/data/data2/homes/tmathieu/testingCofSM/subCanephora/training/predicted.C.subCanephora.aa
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-09-09T010204.475015.snakemake.log

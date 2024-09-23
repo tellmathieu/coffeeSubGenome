@@ -1,0 +1,3 @@
+WildcardError in file /data/data2/homes/tmathieu/testingCofSM/1snake.smk, line 180:
+No values given for wildcard 'subgenome'.
+  File "/data/data2/homes/tmathieu/testingCofSM/1snake.smk", line 180, in <module>
