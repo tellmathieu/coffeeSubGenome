@@ -1,6 +1,0 @@
-Building DAG of jobs...
-MissingInputException in rule all in file /data/data2/homes/tmathieu/testingCofSM/1snake.smk, line 52:
-Missing input files for rule all:
-    affected files:
-        /data/data2/homes/tmathieu/testingCofSM/subEugenioides/flo_opt.yaml
-        /data/data2/homes/tmathieu/testingCofSM/subCanephora/flo_opt.yaml

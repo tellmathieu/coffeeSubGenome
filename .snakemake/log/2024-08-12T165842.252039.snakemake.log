@@ -1,3 +1,0 @@
-NameError in file /data/data2/homes/tmathieu/testingCofSM/1snake.smk, line 35:
-name 'genomeList' is not defined
-  File "/data/data2/homes/tmathieu/testingCofSM/1snake.smk", line 35, in <module>

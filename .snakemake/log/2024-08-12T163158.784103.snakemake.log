@@ -1,5 +1,0 @@
-TypeError in file /data/data2/homes/tmathieu/testingCofSM/snake.smk, line 85:
-join() argument must be str, bytes, or os.PathLike object, not 'list'
-  File "/data/data2/homes/tmathieu/testingCofSM/snake.smk", line 85, in <module>
-  File "/data/data2/homes/tmathieu/miniforge3/envs/sm-test/lib/python3.9/posixpath.py", line 90, in join
-  File "/data/data2/homes/tmathieu/miniforge3/envs/sm-test/lib/python3.9/genericpath.py", line 152, in _check_arg_types

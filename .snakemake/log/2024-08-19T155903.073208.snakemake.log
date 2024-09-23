@@ -1,3 +1,0 @@
-CreateRuleException in file /data/data2/homes/tmathieu/testingCofSM/1snake.smk, line 282:
-The name moveFlo is already used by another rule
-  File "/data/data2/homes/tmathieu/testingCofSM/1snake.smk", line 282, in <module>

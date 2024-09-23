@@ -1,7 +1,0 @@
-Building DAG of jobs...
-MissingInputException in rule testFinal in file /data/data2/homes/tmathieu/testingCofSM/1snake.smk, line 623:
-Missing input files for rule testFinal:
-    output: /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.noUTR.Final.out
-    wildcards: subgenome=subEugenioides
-    affected files:
-        /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/test.UTR.out
