@@ -12,3 +12,6 @@ flo.tar.gz
 *.txt
 subCanephorabusco/
 subEugenioidesbusco/
+busco_downloads/
+*.csv
+*.fa
