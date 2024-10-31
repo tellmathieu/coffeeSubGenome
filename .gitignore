@@ -10,3 +10,5 @@ tmp_opt_subEugenioides/
 .snakemake/
 flo.tar.gz
 *.txt
+subCanephorabusco/
+subEugenioidesbusco/

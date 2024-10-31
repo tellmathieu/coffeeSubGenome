@@ -8,6 +8,8 @@ import os, sys, glob
 # He sent these to me and they are in the provided folder
 # Just testing it on the updated genome from this paper: 
 # 	https://www.nature.com/articles/s41588-024-01695-w
+# Biological question: Is there subgenome dominance in Coffea arabica? Is one of the subgenomes losing universal orthologs faster than others?
+# Collaborators: Thales Henrique Cherubino Ribeiro, Blake Meyers
 #######################
 
 #######################
@@ -20,8 +22,8 @@ subspecies=['subEugenioides', 'subCanephora']
 subspeciesConversion='/home/tmathieu/testingCofSM/subGenomeConversion.txt'
 cdsTranscriptome='/home/tmathieu/coffeaArabica/0.80.colapsed.all.transcriptomes.fasta.transdecoder.cds'
 prevGenomeLink='https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/713/225/GCF_003713225.1_Cara_1.0/GCF_003713225.1_Cara_1.0_genomic.fna.gz'
-prevGenomeShorthand='Cara_1.0'
-hifiGenomeLink='https://bioinformatics.psb.ugent.be/gdb/coffea_arabica/Cara_r6_tgs15k_ChrNames_racon_w3kb_chrs_NoOrganelles.flip.fix.fa.gz'
+prevGenomeShorthand='Cara_1' # technically 1.0, but removing the dot made this simpler to run
+hifiGenomeLink='https://bioinformatics.psb.ugent.be/gdb/coffea_arabica/Cara_r6_tgs15k_ChrNames_racon_w3kb_chrs_NoOrganelles.flip.fix.fasta.gz'
 hifiGenomeShorthand='Cara_hifi'
 providedFolder='/home/tmathieu/coffeaArabica/RNAseqBasedPrediction' #I got this file from Thales
 chrConversion='/home/tmathieu/testingCofSM/chrConversion.txt'
@@ -44,7 +46,8 @@ FLO = ['CITATION.cff','README.md','Rakefile','gff_compare.rb','gff_helpers.rb','
 
 rule all:
 	input: 
-		expand(os.path.join(projectFolder, '{subgenome}', 'training', 'predicted.C.{subgenome}.aa'), subgenome = subspecies),
+		expand(os.path.join(projectFolder, '{subgenome}busco', 'busco.csv'), subgenome = subspecies),
+		os.path.join(projectFolder, 'busco.pdf'),
 
 rule downloadGenomes:
 	params:
@@ -55,7 +58,7 @@ rule downloadGenomes:
 		prevGenomeFile = os.path.join(projectFolder, 'genome', prevGenomeGZ),
 		hifiGenomeFile = os.path.join(projectFolder, 'genome', hifiGenomeGZ)
 	shell: '''
-		# make directory
+		# make directory if not already present
 		mkdir -p {params.genomeDir}
 
 		# download genomes used - original (used by Thales) and new (from the nature article)
@@ -94,18 +97,32 @@ rule convertChrGenome:
 	output:
 		genomeConverted = os.path.join(projectFolder, 'genome', '{genome}_converted.fa')
 	shell: '''
+		# get # of lines in the conversion document
 		lines=$(cat {input.chrConversion} | wc -l)
+		
+		# set a counting var
 		line=1
+
+		# make copy of cleaned genome - so nothing happens to original
 		cp {input.genomeCleaned} temp_{wildcards.genome}_chr.fa
 
+		# iterate through the lines of the conversion doc
 		while [ $line -le $lines ]
 			do
-				oldChrName=$(awk '{{ print $1 }}' {input.chrConversion} | awk -v var1="$line" 'NR==var1')
-				newChrName=$(awk '{{ print $2 }}' {input.chrConversion} | awk -v var1="$line" 'NR==var1')
-				sed -i -e "s/$oldChrName/$newChrName/g" temp_{wildcards.genome}_chr.fa
+				# get old chr name
+				{wildcards.genome}oldChrName=$(awk '{{ print $1 }}' {input.chrConversion} | awk -v var1="$line" 'NR==var1')
+				
+				# get new chr name
+				{wildcards.genome}newChrName=$(awk '{{ print $2 }}' {input.chrConversion} | awk -v var1="$line" 'NR==var1')
+				
+				# replace old with new
+				sed -i -e "s/${wildcards.genome}oldChrName/${wildcards.genome}newChrName/g" temp_{wildcards.genome}_chr.fa
+				
+				# add one to line var so we go to next line
 				let line++
 			done
 
+		# rename temp file to final file
 		mv temp_{wildcards.genome}_chr.fa {output.genomeConverted}
 	'''
 
@@ -116,16 +133,26 @@ rule rmUnknownsGenome:
 	output:
 		genomeFinal = os.path.join(projectFolder, 'genome', '{genome}_final.fa')
 	shell: '''
+		# get # of lines in the conversion document
 		lines=$(cat {input.chrConversion} | wc -l)
+
+		# set a counting var
 		line=1
 
+		# iterate through the lines of the conversion doc
 		while [ $line -le $lines ]
 			do
-				newChrName=$(awk '{{ print $2 }}' {input.chrConversion} | awk -v var1="$line" 'NR==var1')
-				sed -n "/>$newChrName/{{p;n;p}}" {input.genomeConverted} >> temp_{wildcards.genome}_rep.fa
+				# get new chr name
+				{wildcards.genome}newChrName=$(awk '{{ print $2 }}' {input.chrConversion} | awk -v var1="$line" 'NR==var1')
+				
+				# only add fasta record to temp doc if its on our list
+				sed -n "/>${wildcards.genome}newChrName/{{p;n;p}}" {input.genomeConverted} >> temp_{wildcards.genome}_rep.fa
+				
+				# add one to line var so we go to next line
 				let line++
 			done
 
+		# rename temp file to final file
 		mv temp_{wildcards.genome}_rep.fa {output.genomeFinal}
 	'''
 
@@ -139,15 +166,18 @@ rule separateSubGenomes:
 	output:
 		subGenomeFinal = os.path.join(projectFolder, '{subgenome}', '{subgenome}_{genome}_final.fa')
 	shell: '''
+		# make directory if not already present
 		mkdir -p {params.subgenomeDir}
 
-		chrName=$(grep {wildcards.subgenome} {input.subspeciesConversion} | awk '{{ print $1 }}')
+		# grab chr name - I add the subgenome name to the variables, because I problems in the past when running in parallel
+		{wildcards.subgenome}chrName=$(grep {wildcards.subgenome} {input.subspeciesConversion} | awk '{{ print $1 }}')
 
-		grep -A 1 "sg$chrName" {params.genomeDir}/{wildcards.genome}_final.fa > {output.subGenomeFinal}
+		# put only the grabbed chr names in a new fasta file - separating the genomes
+		grep -A 1 "sg${wildcards.subgenome}chrName" {params.genomeDir}/{wildcards.genome}_final.fa > {output.subGenomeFinal}
 
 	'''
 
-# Nexts we have to combine the hints files that Thales generated 
+# Next we have to combine the hints files that Thales generated 
 # and then lift (get new coodinates on the new genome) them 
 # from the old genome to the new genome
 # The files he generated: prot.hints, rnaseq.gff, introns.f.gff
@@ -218,6 +248,7 @@ rule getSubGenomeHintsGFF:
 	output:
 		subGenomeHints = os.path.join(projectFolder, '{subgenome}', '{subgenome}_hints.gff')
 	shell: '''
+		# concatenating all the subgenome hints
 		cat {input.protHints} \
 		{input.cdnaHints} \
 		{input.rnaseqHints} \
@@ -232,6 +263,7 @@ rule convertChrHints:
 	output:
 		convertedHints = os.path.join(projectFolder, '{subgenome}', '{subgenome}_hints_converted.gff')
 	shell: '''
+		# this process is similar to rules: convertChrGenome and rmUnknownsGenome
 		lines=$(cat {input.chrConversion} | wc -l)
 		line=1
 		cp {input.subGenomeHints} temp_{wildcards.subgenome}_chr_hints.gff
@@ -252,6 +284,7 @@ rule downloadFlo:
 	output:
 		os.path.join(projectFolder, 'flo.tar.gz')
 	shell: '''
+		# download flo
 		wget -c https://github.com/yeban/flo/archive/master.tar.gz -O flo.tar.gz
 	'''
 
@@ -261,6 +294,7 @@ rule gunzipFlo:
 	output:
 		expand(os.path.join(projectFolder, 'flo-master', '{flo}'),flo=FLO)
 	shell: '''
+		# uncompress flo
 		tar xvf flo.tar.gz
 		wait
 	'''
@@ -271,11 +305,21 @@ rule moveFlo:
 	output:
 		expand(os.path.join(projectFolder, 'flo', '{flo}'),flo=FLO)
 	shell: '''
-		mkdir -p flo
+		# change name of uncompressed flo file - flo requires this
+		if [ -d flo/ ]; then
+			echo "flo exists - removing"
+			rm -rdf flo
+			# make dir
+			mkdir -p flo
+			mv flo-master/* flo/
+		else
+			# make dir
+			mkdir -p flo
+			mv flo-master/* flo/
+		fi
 
-		mv flo-master/* flo/
-
-		rmdir flo-master
+		# remove old folder
+		rm -rdf flo-master
 	'''
 
 rule installFlo:
@@ -285,8 +329,10 @@ rule installFlo:
 	output:
 		floInstallDoneTxt = os.path.join(projectFolder, 'floInstallDone.txt')
 	shell: '''
+		# run install script
 		bash {input.installFloScript}
 
+		# create file that says this process is done - it was easier this way than finding the new files
 		echo Flo Install Done! > {output.floInstallDoneTxt}
 	'''
 
@@ -300,6 +346,7 @@ rule removeGenesFromHintsGFF:
 	output:
 		subGenomeNoGenesHints = os.path.join(projectFolder, '{subgenome}', '{subgenome}_nogenes_hints.gff')
 	shell: '''
+		# remove genes - I checked this and the file sizes are the same
 		{params.floPath}/gff_remove_feats.rb \
 		gene \
 		{input.convertedHints} \
@@ -317,6 +364,7 @@ rule chooseOptionsForFlo:
 	output:
 		optYaml = os.path.join(projectFolder, '{subgenome}', 'flo_opts.yaml')
 	shell: '''
+		# creating yaml file using echo
 		echo ":add_to_path:" > {output.optYaml}
 		echo "  - '{params.projectFolder}/ext/kent/bin'" >> {output.optYaml}
 		echo "  - '{params.projectFolder}/ext/parallel-20150722/src'" >> {output.optYaml}
@@ -343,8 +391,10 @@ rule runLiftOverSubGenomes:
 	output:
 		liftOverCompleteTxt = os.path.join(projectFolder, 'LiftOverComplete.txt'),
 	shell: '''
+		# run flo
 		bash {params.runFloScript} {params.subgenomes} {params.projectFolder} ../flo/Rakefile
 
+		# show finished
 		echo Flo Liftovers complete! > {output.liftOverCompleteTxt}
 	'''	
 
@@ -356,6 +406,7 @@ rule copyLiftedHints:
 	output:
 		renamedLiftedHints = os.path.join(projectFolder, '{subgenome}', '{subgenome}_lifted_hints.gff3')
 	shell: '''
+		# renaming lifted hints to include subgenome name
 		cp {params.liftedHints} {output.renamedLiftedHints}
 	'''
 
@@ -402,6 +453,7 @@ rule initialETraining:
 		mkdir -p {params.trainingDir}
 		cp {input.bonafideGB} {output.cpBonafideGB}
 
+		# run initial etraining - to get some parameters we need
 		etraining \
 			--species={wildcards.subgenome} \
 			{output.cpBonafideGB} \
@@ -448,6 +500,7 @@ rule createTrainingSet:
 		testGB = os.path.join(projectFolder, '{subgenome}', 'training', 'test.gb'),
 		trainGB = os.path.join(projectFolder, '{subgenome}', 'training', 'train.gb')
 	shell: '''
+		# randomly splits bonafide file so we have a training set and a testing set
 		randomSplit.pl {params.bonafideFGB} {params.numGenesTest}
 		mv {params.bonafideFGB}.test {output.testGB}
 		mv {params.bonafideFGB}.train {output.trainGB}
@@ -461,6 +514,7 @@ rule eTrain:
 	output:
 		trainOut = os.path.join(projectFolder, '{subgenome}', 'training', 'train.out')
 	shell: '''
+		# etraining with the training set
 		etraining \
 			--species={wildcards.subgenome} \
 			{input.trainGB} \
@@ -512,32 +566,17 @@ rule runTestAugustus:
 	output:
 		testOut = os.path.join(projectFolder, '{subgenome}', 'training', 'test.out')
 	shell: '''
+		# running augustus with new parameters
 		augustus \
 			--species={wildcards.subgenome} \
 			{input.testGB} \
-			&> {output.testOut}
-	'''
-
-rule runUTRTestAugustus:
-	threads: 20
-	input:
-		testGB = os.path.join(projectFolder, '{subgenome}', 'training', 'test.gb'),
-		testOut = os.path.join(projectFolder, '{subgenome}', 'training', 'test.out')
-	output:
-		testOut = os.path.join(projectFolder, '{subgenome}', 'training', 'test.utr.out')
-	shell: '''
-		augustus \
-			--species={wildcards.subgenome} \
-			{input.testGB} \
-			--UTR=on \
-			--print_utr=on \
 			&> {output.testOut}
 	'''
 
 rule optimizeUTRs:
 	threads: 20
 	input:
-		testOut = os.path.join(projectFolder, '{subgenome}', 'training', 'test.utr.out'),
+		testOut = os.path.join(projectFolder, '{subgenome}', 'training', 'test.out'),
 		trainGB = os.path.join(projectFolder, '{subgenome}', 'training', 'train.gb')
 	params:
 		augustusConfig = os.path.join(environmentFolder, 'config'),
@@ -545,6 +584,7 @@ rule optimizeUTRs:
 	output:
 		optimizeReport = os.path.join(projectFolder, '{subgenome}', 'training', 'optimizeReport.UTR.out')
 	shell: '''
+		# refine augustus parameters for UTRs
 		optimize_augustus.pl  \
 			--cpus={threads} \
 			--species={wildcards.subgenome} \
@@ -556,28 +596,15 @@ rule optimizeUTRs:
 			| tee {output.optimizeReport}
 	'''
 
-rule trainAfterUTROptimization:
-	threads: 20
-	input: 
-		optimizeReport = os.path.join(projectFolder, '{subgenome}', 'training', 'optimizeReport.UTR.out'),
-		trainGB = os.path.join(projectFolder, '{subgenome}', 'training', 'train.gb')
-	output:
-		finalTrainOut = os.path.join(projectFolder, '{subgenome}', 'training', 'train.UTR.out')
-	shell: '''
-		etraining \
-			--species={wildcards.subgenome} \
-			{input.trainGB} \
-			&> {output.finalTrainOut}
-	'''
-
 rule testUTR:
 	threads: 20
 	input:
 		testGB = os.path.join(projectFolder, '{subgenome}', 'training', 'test.gb'),
-		finalTrainOut = os.path.join(projectFolder, '{subgenome}', 'training', 'train.UTR.out')
+		optimizeReport = os.path.join(projectFolder, '{subgenome}', 'training', 'optimizeReport.UTR.out')
 	output:
 		testUTRFinalOut = os.path.join(projectFolder, '{subgenome}', 'training', 'test.UTR.Final.out')
 	shell: '''
+		# testing with UTRs on to see if accuracy or precision got better
 		augustus \
 			--species={wildcards.subgenome} \
 			{input.testGB} \
@@ -596,6 +623,7 @@ rule optimize:
 	output:
 		optimizeReport = os.path.join(projectFolder, '{subgenome}', 'training', 'optimizeReport.out')
 	shell: '''
+		# refine augustus parameters for everything but UTRS
 		optimize_augustus.pl \
 			--cpus={threads} \
 			--species={wildcards.subgenome} \
@@ -606,28 +634,15 @@ rule optimize:
 			| tee {output.optimizeReport}
 	'''
 
-rule trainAfterOptimization:
-	threads: 20
-	input: 
-		optimizeReport = os.path.join(projectFolder, '{subgenome}', 'training', 'optimizeReport.out'),
-		trainGB = os.path.join(projectFolder, '{subgenome}', 'training', 'train.gb')
-	output:
-		finalTrainOut = os.path.join(projectFolder, '{subgenome}', 'training', 'train.afterOpt.out')
-	shell: '''
-		etraining \
-			--species={wildcards.subgenome} \
-			{input.trainGB} \
-			&> {output.finalTrainOut}
-	'''
-
 rule testFinal:
 	threads: 20
 	input:
 		testGB = os.path.join(projectFolder, '{subgenome}', 'training', 'test.gb'),
-		testUTRFinalOut = os.path.join(projectFolder, '{subgenome}', 'training', 'train.afterOpt.out')
+		optimizeReport = os.path.join(projectFolder, '{subgenome}', 'training', 'optimizeReport.out')
 	output:
 		testFinalOut = os.path.join(projectFolder, '{subgenome}', 'training', 'test.noUTR.Final.out')
 	shell: '''
+		# final testing run of augusutus
 		augustus \
 			--species={wildcards.subgenome} \
 			{input.testGB} \
@@ -639,12 +654,12 @@ rule trainingTestResults:
 	threads: 20
 	input:
 		testOut = os.path.join(projectFolder, '{subgenome}', 'training', 'test.out'),
-		testUTROut = os.path.join(projectFolder, '{subgenome}', 'training', 'test.utr.out'),
 		testFinalOut = os.path.join(projectFolder, '{subgenome}', 'training', 'test.noUTR.Final.out'),
 		testUTRFinalOut = os.path.join(projectFolder, '{subgenome}', 'training', 'test.UTR.Final.out')
 	output:
 		trainingSummaryReport = os.path.join(projectFolder, '{subgenome}', 'training', 'trainingSummaryReport.txt')
 	shell: '''
+		# taking results from the tests and putting them into the same file
 		echo "******************* {wildcards.subgenome} ************************" > {output.trainingSummaryReport}
 		echo "*******************************************************" >> {output.trainingSummaryReport}
 		echo "************** Original Training Output ***************" >> {output.trainingSummaryReport}
@@ -657,17 +672,12 @@ rule trainingTestResults:
 		grep -A 40 "Evaluation of gene prediction" {input.testFinalOut} >> {output.trainingSummaryReport}
 
 		echo "*******************************************************" >> {output.trainingSummaryReport}
-		echo "********** Optimized UTR Training Output **************" >> {output.trainingSummaryReport}
-		echo "*******************************************************" >> {output.trainingSummaryReport}
-		grep -A 40 "Evaluation of gene prediction" {input.testUTROut} >> {output.trainingSummaryReport}
-
-		echo "*******************************************************" >> {output.trainingSummaryReport}
 		echo "************ Final UTR Training Output ****************" >> {output.trainingSummaryReport}
 		echo "*******************************************************" >> {output.trainingSummaryReport}
 		grep -A 40 "Evaluation of gene prediction" {input.testUTRFinalOut} >> {output.trainingSummaryReport}
 	'''
 
-rule runMainAugustusAnalysis:
+rule runMainAugustusAnalysisUTR:
 	threads: 20
 	input:
 		trainingSummaryReport = os.path.join(projectFolder, '{subgenome}', 'training', 'trainingSummaryReport.txt'),
@@ -678,10 +688,12 @@ rule runMainAugustusAnalysis:
 	output:
 		cpExtCFG = os.path.join(projectFolder, '{subgenome}', 'training', '{subgenome}.extrinsic.M.RM.E.W.P.cfg'),
 		errFile = os.path.join(projectFolder, '{subgenome}', 'training', 'errors_{subgenome}.err'),
-		predictedGFF = os.path.join(projectFolder, '{subgenome}', 'training', 'predicted.C.{subgenome}.gff')
+		predictedGFF = os.path.join(projectFolder, '{subgenome}', 'training', 'predicted.UTR.C.{subgenome}.gff')
 	shell: '''
+		# copying extrinsic augustus file - not sure why we do this
 		cp {params.extCFG} {output.cpExtCFG}
 
+		# running Augustus with hints on - official run
 		augustus \
 			--species={wildcards.subgenome} \
 			--UTR=on \
@@ -697,13 +709,46 @@ rule runMainAugustusAnalysis:
 			--errfile={output.errFile}
 	'''
 
+rule runMainAugustusAnalysisNOUTR:
+	threads: 20
+	input:
+		trainingSummaryReport = os.path.join(projectFolder, '{subgenome}', 'training', 'trainingSummaryReport.txt'),
+		subGenomeHifiFinal = os.path.join(projectFolder, '{subgenome}', '{subgenome}_' + hifiGenomeShorthand + '_final.fa'),
+		renamedLiftedHints = os.path.join(projectFolder, '{subgenome}', '{subgenome}_lifted_hints.gff3')
+	params:
+		extCFG= os.path.join(environmentFolder, 'config', 'extrinsic', 'extrinsic.M.RM.E.W.P.cfg')
+	output:
+		cpExtCFG = os.path.join(projectFolder, '{subgenome}', 'training', '{subgenome}.extrinsic.M.RM.E.W.P.cfg'),
+		errFile = os.path.join(projectFolder, '{subgenome}', 'training', 'errors_{subgenome}.err'),
+		predictedGFF = os.path.join(projectFolder, '{subgenome}', 'training', 'predicted.noUTR.C.{subgenome}.gff')
+	shell: '''
+		# copying extrinsic augustus file - not sure why we do this
+		cp {params.extCFG} {output.cpExtCFG}
+
+		# running Augustus with hints on - official run
+		augustus \
+			--species={wildcards.subgenome} \
+			--UTR=off \
+			--extrinsicCfgFile={output.cpExtCFG} \
+			--allow_hinted_splicesites=atac \
+			{input.subGenomeHifiFinal} \
+			--codingseq=on \
+			--protein=on \
+			--outfile={output.predictedGFF} \
+			--progress=true \
+			--genemodel=complete \
+			--hintsfile={input.renamedLiftedHints} \
+			--errfile={output.errFile}
+	'''
+
 rule getAnnoFasta:
 	input:
 		subGenomeHifiFinal = os.path.join(projectFolder, '{subgenome}', '{subgenome}_' + hifiGenomeShorthand + '_final.fa'),
-		predictedGFF = os.path.join(projectFolder, '{subgenome}', 'training', 'predicted.C.{subgenome}.gff')
+		predictedGFF = os.path.join(projectFolder, '{subgenome}', 'training', 'predicted.noUTR.C.{subgenome}.gff')
 	output:
-		predictedAA = os.path.join(projectFolder, '{subgenome}', 'training', 'predicted.C.{subgenome}.aa')
+		predictedAA = os.path.join(projectFolder, '{subgenome}', 'training', 'predicted.noUTR.C.{subgenome}.aa')
 	shell: '''
+		# get protein annotations
 		getAnnoFasta.pl \
 			--seqfile {input.subGenomeHifiFinal} \
 			{input.predictedGFF}
@@ -711,9 +756,73 @@ rule getAnnoFasta:
 
 rule renamingPredictedAA:
 	input:
-		predictedAA = os.path.join(projectFolder, '{subgenome}', 'training', 'predicted.C.{subgenome}.aa')
+		predictedAA = os.path.join(projectFolder, '{subgenome}', 'training', 'predicted.noUTR.C.{subgenome}.aa')
 	output:
-		renamedPredictedAA = os.path.join(projectFolder, '{subgenome}', 'training', '{subgenome}.Proteins.aa')
+		renamedPredictedAA = os.path.join(projectFolder, '{subgenome}', 'training', '{subgenome}.noUTR.Proteins.aa')
 	shell: '''
-		sed "s/>/>SubC.{wildcards.subgenome}_/g" {input.predictedAA} > {output.renamedPredictedAA}
+		# adding subgenome name to protein prediction
+		sed "s/>/>{wildcards.subgenome}_/g" {input.predictedAA} > {output.renamedPredictedAA}
+	'''
+
+rule BUSCOproteinAnalyis:
+	threads: 20
+	input:
+		renamedPredictedAA = os.path.join(projectFolder, '{subgenome}', 'training', '{subgenome}.noUTR.Proteins.aa')
+	params:
+		buscoDir = os.path.join(projectFolder, '{subgenome}busco')
+	output:
+		outputSummary = os.path.join(projectFolder, '{subgenome}busco', 'short_summary.specific.eudicots_odb10.{subgenome}busco.txt'),
+		full_table = os.path.join(projectFolder, '{subgenome}busco', 'run_eudicots_odb10', 'full_table.tsv')
+	shell: '''
+		mkdir -p {params.buscoDir}
+
+		busco \
+			-f \
+			-i {input.renamedPredictedAA} \
+			-l eudicots_odb10 \
+			-o {wildcards.subgenome}busco \
+			-m prot \
+			-c {threads} \
+			--long
+		'''
+
+rule parseBUSCO:
+	input:
+		outputSummary = os.path.join(projectFolder, '{subgenome}busco', 'short_summary.specific.eudicots_odb10.{subgenome}busco.txt'),
+		full_table = os.path.join(projectFolder, '{subgenome}busco', 'run_eudicots_odb10', 'full_table.tsv')
+	params:
+		buscoDir = os.path.join(projectFolder, '{subgenome}busco',)
+	output:
+		buscoCSV = os.path.join(projectFolder, '{subgenome}busco', 'busco.csv')
+	shell: '''
+		echo "Strain,Complete_single_copy,Complete_duplicated,Fragmented,Missing" > {output.buscoCSV}
+		cat {input.outputSummary} | grep "(S)" | awk -v strain="{wildcards.subgenome}" '{{print strain","$1}}' > {params.buscoDir}/complete_single.txt
+		cat {input.outputSummary} | grep "(D)" | awk '{{print $1}}' > {params.buscoDir}/complete_duplicated.txt
+		cat {input.outputSummary} | grep "(F)" | awk '{{print $1}}' > {params.buscoDir}/fragmented.txt
+		cat {input.outputSummary} | grep "(M)" | awk '{{print $1}}' > {params.buscoDir}/missing.txt
+		paste -d "," {params.buscoDir}/complete_single.txt {params.buscoDir}/complete_duplicated.txt {params.buscoDir}/fragmented.txt {params.buscoDir}/missing.txt >> {output.buscoCSV}
+		rm {params.buscoDir}/complete_single.txt {params.buscoDir}/complete_duplicated.txt {params.buscoDir}/fragmented.txt {params.buscoDir}/missing.txt
+	'''
+
+rule combineBUSCO:
+	input:
+		buscoCSV = expand(os.path.join(projectFolder, '{subgenome}busco', 'busco.csv'), subgenome = subspecies)
+	output:
+		combinedBuscoCSV = os.path.join(projectFolder, 'combinedBusco.csv')
+	shell: '''
+		echo "Strain,Complete_single_copy,Complete_duplicated,Fragmented,Missing" > {output.combinedBuscoCSV}
+		cat {input.buscoCSV} | sort | uniq -u >> {output.combinedBuscoCSV}
+	'''
+
+rule buscoRscript:
+	input:
+		combinedBuscoCSV = os.path.join(projectFolder, 'combinedBusco.csv')
+	params:
+		buscoRscript = os.path.join(projectFolder, 'scripts', 'busco.R')
+	output:
+		buscoPDF = os.path.join(projectFolder, 'busco.pdf')
+	shell: '''
+		Rscript {params.buscoRscript} \
+			{input.combinedBuscoCSV} \
+			{output.buscoPDF}
 	'''

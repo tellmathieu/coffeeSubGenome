@@ -1,0 +1,26 @@
+2024-10-30 22:46:10 DEBUG:busco.run_BUSCO	Command line: /home/tmathieu/miniforge3/envs/liftnew/bin/busco -f -i /data/data2/homes/tmathieu/testingCofSM/subEugenioides/training/subEugenioides.noUTR.Proteins.aa -l eudicots_odb10 -o subEugenioides/busco -m prot -c 20 --long
+2024-10-30 22:46:10 INFO:busco.run_BUSCO	***** Start a BUSCO v5.2.2 analysis, current time: 10/30/2024 22:46:10 *****
+2024-10-30 22:46:10 DEBUG:busco.ConfigManager	Getting config file
+2024-10-30 22:46:10 INFO:busco.ConfigManager	Configuring BUSCO with local environment
+2024-10-30 22:46:10 INFO:busco.BuscoConfig	Mode is proteins
+2024-10-30 22:46:10 ERROR:busco.BuscoRunner	Please do not provide a full path in --out parameter, no slash. Use out_path in the config.ini file to specify the full path.
+2024-10-30 22:46:10 DEBUG:busco.BuscoRunner	Please do not provide a full path in --out parameter, no slash. Use out_path in the config.ini file to specify the full path.
+Traceback (most recent call last):
+  File "/home/tmathieu/miniforge3/envs/liftnew/lib/python3.9/site-packages/busco/run_BUSCO.py", line 103, in run
+    self.load_config()
+  File "/home/tmathieu/miniforge3/envs/liftnew/lib/python3.9/site-packages/busco/run_BUSCO.py", line 94, in load_config
+    self.config_manager.load_busco_config_main(sys.argv)
+  File "/home/tmathieu/miniforge3/envs/liftnew/lib/python3.9/site-packages/busco/BuscoLogger.py", line 62, in wrapped_func
+    self.retval = func(*args, **kwargs)
+  File "/home/tmathieu/miniforge3/envs/liftnew/lib/python3.9/site-packages/busco/ConfigManager.py", line 58, in load_busco_config_main
+    self.config_main.validate()
+  File "/home/tmathieu/miniforge3/envs/liftnew/lib/python3.9/site-packages/busco/BuscoConfig.py", line 407, in validate
+    self._cleanup_config()
+  File "/home/tmathieu/miniforge3/envs/liftnew/lib/python3.9/site-packages/busco/BuscoConfig.py", line 644, in _cleanup_config
+    self._check_out_value()
+  File "/home/tmathieu/miniforge3/envs/liftnew/lib/python3.9/site-packages/busco/BuscoConfig.py", line 592, in _check_out_value
+    raise BatchFatalError(
+busco.Exceptions.BatchFatalError: Please do not provide a full path in --out parameter, no slash. Use out_path in the config.ini file to specify the full path.
+2024-10-30 22:46:10 ERROR:busco.BuscoRunner	BUSCO analysis failed !
+2024-10-30 22:46:10 ERROR:busco.BuscoRunner	Check the logs, read the user guide (https://busco.ezlab.org/busco_userguide.html), and check the BUSCO issue board on https://gitlab.com/ezlab/busco/issues
+
