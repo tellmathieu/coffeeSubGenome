@@ -15,3 +15,5 @@ subEugenioidesbusco/
 busco_downloads/
 *.csv
 *.fa
+*.log
+*.pdf
