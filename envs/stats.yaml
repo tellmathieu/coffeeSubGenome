@@ -1,0 +1,6 @@
+name: stats
+channels:
+ - bioconda
+dependencies:
+ - samtools=1.22.1
+ - bamtools=2.5.3
